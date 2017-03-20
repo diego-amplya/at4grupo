@@ -3,9 +3,9 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-Header add Access-Control-Allow-Origin "*"
+#Header add Access-Control-Allow-Origin "*"
 
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+#RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 RewriteBase /
 RewriteRule ^index\.php$ - [L]
