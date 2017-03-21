@@ -34,19 +34,19 @@ $(document).ready(function () { ////////////////////////////////////////////////
         console.log(contrasenya);
 
         if ($('#guardar-datos').is(':checked')) {
-            
+
             localStorage.uname = $("#email").val();
             localStorage.upass = $("#contrasenya").val();
-            
-        } else if ($('#guardar-datos').is(':not(:checked)')){
-            
+
+        } else if ($('#guardar-datos').is(':not(:checked)')) {
+
             window.localStorage.clear();
         }
 
         // se llama a la función que recupera las categorías si el usuario es válido
         // esta misma función nos sirve de login pues, si el usuario no es válido,
         // no podrá acceder al resto de la aplicación
-        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/categories';
+        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/categories/?order=desc';
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarCategorias);
 
         // comprobar si el usuario es autor
@@ -55,7 +55,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en proyecto ------------------------------------------------
-    $('#lista-proyectos').on('click', 'li > a', function (e) {
+    $('#lista-proyectos').on('click', 'li a', function (e) {
 
         $.mobile.loading('show', {
             text: "Cargando...",
@@ -231,12 +231,13 @@ function mostrarCategorias(categorias) {
 
     console.log('@mostrarCategorias');
 
-    if(categorias.length < 2) {
-        
+    if (categorias.length < 2) {
+
         $.mobile.loading('hide');
         $('#login-error').css('display', 'block');
         return false;
-    };
+    }
+    ;
 
     $('#login-error').css('display', 'none');
     window.location.assign("#categories-list");
@@ -244,16 +245,19 @@ function mostrarCategorias(categorias) {
     var html = '';
     $.each(categorias, function (indice, proyecto) {
         console.log(proyecto);
-
+        console.log(proyecto.slug);
         // El ID 1 corresponde a 'Sin Categoría'
         if (proyecto.id === 1) {
             return;
         }
 
         html += '<li>' +
-                '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-transition="slide">' +
-                proyecto.name +
-                '</a>' +
+                '<div class="imagen-proyecto">' +
+                '<img src="' + proyecto.description + '">' +
+                '</div>' +
+                '<div class="entradas-proyecto">' +
+                '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
+                '</div>' +
                 '</li>';
     });
     $('#lista-proyectos').html('');

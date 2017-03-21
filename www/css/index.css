@@ -90,6 +90,11 @@ body {
     background-image: url('../img/error.png');
 }
 
+.entradas-proyecto {
+    float: left;
+    width: 75%;
+}
+
 h1, h2, h3, h4, h5, h6  {
     color: #013861 !important;
 }
@@ -97,6 +102,16 @@ h1, h2, h3, h4, h5, h6  {
 #imagen-destacada {
     display: block;
     margin: 15px auto;
+    width: 100%;
+}
+
+.imagen-proyecto {
+    float: left;
+    width: 25%;
+}
+
+.imagen-proyecto img {
+    
     width: 100%;
 }
 
@@ -146,11 +161,12 @@ input[type="checkbox"] {
     text-align: left;
 }
 
+#lista-proyectos li {
+    overflow: hidden;
+}
+
 #lista-proyectos li a {
-    background-color: #85cbfe;
-    border: 1px solid #013861 !important;
     color: #013861 !important;
-    display: block;
     padding: 10px;
     text-decoration: none;
 }
