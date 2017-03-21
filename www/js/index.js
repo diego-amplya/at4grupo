@@ -231,18 +231,27 @@ function mostrarCategorias(categorias) {
 
     console.log('@mostrarCategorias');
 
+    if(categorias.length < 2) {
+        
+        $.mobile.loading('hide');
+        $('#login-error').css('display', 'block');
+        return false;
+    };
+
+    $('#login-error').css('display', 'none');
     window.location.assign("#categories-list");
 
     var html = '';
     $.each(categorias, function (indice, proyecto) {
         console.log(proyecto);
 
+        // El ID 1 corresponde a 'Sin Categoría'
         if (proyecto.id === 1) {
             return;
         }
 
         html += '<li>' +
-                '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' +
+                '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-transition="slide">' +
                 proyecto.name +
                 '</a>' +
                 '</li>';
@@ -337,39 +346,4 @@ function habilitarAutor(registro) {
 
         autor = true;
     }
-}
-
-/**
- * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * @param {type} imgData
- * @returns {undefined}
- */
-function camSuccess(imgData) {
-
-    $('#imagen-destacada').attr('src', imgData);
-}
-
-/**
- * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * @param {type} error
- * @returns {undefined}
- */
-function camError(error) {
-
-    alert(error);
-}
-
-/**
- * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * @returns {undefined}
- */
-function accessCamera() {
-
-    var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-    };
-
-    navigator.camera.getPicture(camSuccess, camError, options);
 }
