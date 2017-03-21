@@ -88,15 +88,22 @@ $(document).ready(function () { ////////////////////////////////////////////////
     // evento: clic en Publicar ------------------------------------------------
     $('.btn-publicar').on('click', function () {
 
+        var file_data = $("#imagen").prop("files")[0];
+        console.log(file_data);
+        var form_data = new FormData();
+        form_data.append("file", file_data);
+
         jQuery.ajax({
             url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/',
             method: 'POST',
             crossDomain: true,
             headers: {
-                'content-type': 'application/json',
-                'content-disposition': 'attachment; filename="' + $('#imagen-destacada').attr('src') + '"'
+                'Content-Disposition': 'attachment; filename=' + $('#imagen').val(),
             },
-            data: 'imageData',
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: form_data,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya));
 
@@ -335,6 +342,7 @@ function camError(error) {
 function accessCamera() {
 
     var options = {
+        quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY
     };
