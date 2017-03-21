@@ -33,6 +33,16 @@ $(document).ready(function () { ////////////////////////////////////////////////
         contrasenya = $("#contrasenya").val();
         console.log(contrasenya);
 
+        if ($('#guardar-datos').is(':checked')) {
+            
+            localStorage.uname = $("#email").val();
+            localStorage.upass = $("#contrasenya").val();
+            
+        } else if ($('#guardar-datos').is(':not(:checked)')){
+            
+            window.localStorage.clear();
+        }
+
         // se llama a la función que recupera las categorías si el usuario es válido
         // esta misma función nos sirve de login pues, si el usuario no es válido,
         // no podrá acceder al resto de la aplicación
@@ -42,13 +52,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
         // comprobar si el usuario es autor
         url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/users/me?context=edit';
         obtenerDatos(nombre_usuario, contrasenya, url, habilitarAutor);
-    });
-
-    // evento: clic en Guardar datos de acceso ---------------------------------
-    $('#btn-guardar-acceso').click(function (e) {
-
-        localStorage.uname = $("#email").val();
-        localStorage.upass = $("#contrasenya").val();
     });
 
     // evento: clic en proyecto ------------------------------------------------
