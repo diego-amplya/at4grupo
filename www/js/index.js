@@ -88,7 +88,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
     // evento: clic en Publicar ------------------------------------------------
     $('.btn-publicar').on('click', function () {
 
-        var file_data = $("#imagen").prop("files")[0];
+        var file_data = $("#imagen-destacada").prop("files")[0];
         console.log(file_data);
         var form_data = new FormData();
         form_data.append("file", file_data);
@@ -96,18 +96,43 @@ $(document).ready(function () { ////////////////////////////////////////////////
         jQuery.ajax({
             url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/',
             method: 'POST',
-            crossDomain: true,            
+            crossDomain: true,
             contentType: false,
             processData: false,
             cache: false,
             data: form_data,
             headers: {
-                'Authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
-                'Content-Disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
+                'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
+                'content-disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
             },
             success: function (response, txtStatus, xhr) {
-                console.log(response);
-                alert(response);
+                console.log(response.id);
+
+                var options = {
+                    categories: sessionStorage.proyecto_id,
+                    content: $('#ta-contenido').val(),
+                    featured_media: response.id,
+                    status: 'publish',
+                    title: $('#titulo').val()
+                };
+
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://dvl.franciscobosch.es/wp-json/wp/v2/posts/",
+                    "method": "POST",
+                    "headers": {
+                        'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
+                        "content-type": "application/json"
+                    },
+                    "processData": false,
+                    "data": JSON.stringify(options)
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+
             },
             error: function (textStatus, errorThrown) {
 
