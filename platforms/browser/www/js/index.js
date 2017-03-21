@@ -96,17 +96,14 @@ $(document).ready(function () { ////////////////////////////////////////////////
         jQuery.ajax({
             url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/',
             method: 'POST',
-            crossDomain: true,
-            headers: {
-                'Content-Disposition': 'attachment; filename=' + $('#imagen').val(),
-            },
+            crossDomain: true,            
             contentType: false,
             processData: false,
             cache: false,
             data: form_data,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya));
-
+            headers: {
+                'Authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
+                'Content-Disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
             },
             success: function (response, txtStatus, xhr) {
                 console.log(response);
