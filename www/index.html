@@ -46,7 +46,7 @@
     </head>
     <body>
         <div class="app">
-
+<!-- -------------------------------------------------------------------------->  
             <div data-role="page" id="login" data-theme="a">
                 <div data-role="header">
                     <img src="img/logo.jpg" id="logo">
@@ -61,25 +61,20 @@
                     <input type="password" name="contrasenya" id="contrasenya" placeholder="contraseña">
                     <br>
                     <br>
-                    <input type="submit" data-inline="false" data-mini="true" value="Iniciar sesión" id="login-btn">
+                    <input type="submit" data-inline="false" data-mini="true" value="Iniciar sesión" id="login-btn" data-transition="slide">
                     <br>
                     <br>
-                    <a href="#confimar-guardado-datos" data-rel="popup" class="ui-btn" id="btn-guardar-acceso" data-transition="pop ">Guardar datos de acceso</a>
+                    
                     <br>
                     <br>
                     <a href="http://www.at4grupo.es" target="_blank" id="enlace-web">www.AT4grupo.es</a>
-                    <div data-role="popup" id="confimar-guardado-datos" data-corners="false">
-                        <p>Sus datos de acceso se han guardado correctamente.</p>
-                        <input type="button" class="ok" value="OK">
-                        <br>
-                    </div>
 
                 </div><!-- /content -->
 
                 <div data-role="footer">
                 </div><!-- /footer -->
             </div><!-- /page -->
-
+<!-- -------------------------------------------------------------------------->  
             <div data-role="page" id="categories-list">
                 <div data-role="header">
                     <img src="img/logo.jpg" id="logo">
@@ -93,11 +88,11 @@
                 <div data-role="footer">
                 </div><!-- /footer -->                
             </div><!-- /page -->
-
+<!-- -------------------------------------------------------------------------->
             <div data-role="page" id="posts-list">
                 <div data-role="header">
-                    <a href="#categories-list" class="btn-volver">< Proyectos</a>
-                    <a href="#create-post" class="btn-crear-entrada"> + </a>
+                    <a href="#categories-list" class="btn-volver" data-transition="slide">< Proyectos</a>
+                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"> + </a>
                 </div><!-- /header -->
 
                 <div data-role="content">
@@ -108,11 +103,11 @@
                 <div data-role="footer">
                 </div><!-- /footer -->                
             </div><!-- /page -->
-
+<!-- -------------------------------------------------------------------------->  
             <div data-role="page" id="single-post">
                 <div data-role="header">
-                    <a href="#posts-list" class="btn-volver">< Entradas</a>
-                    <a href="#create-post" class="btn-crear-entrada"> + </a>
+                    <a href="#posts-list" class="btn-volver" data-transition="slide">< Entradas</a>
+                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"> + </a>
                 </div><!-- /header -->
 
                 <div data-role="content">
@@ -125,10 +120,10 @@
                 <div data-role="footer">
                 </div><!-- /footer -->                
             </div><!-- /page -->
-
+<!-- -------------------------------------------------------------------------->  
             <div data-role="page" id="create-post">
                 <div data-role="header">
-                    <a href="#" class="btn-terminar-edicion"> x </a>
+                    <a href="#confirmar-volver" class="btn-terminar-edicion" data-rel="popup" data-transition="pop"> x </a>
                     <a href="#" class="btn-publicar">Publicar ></a>
                 </div><!-- /header -->
 
@@ -141,6 +136,13 @@
                     -->
                     <input type="file" name="imagen-destacada" id="imagen-destacada" placeholder="test">
                     <textarea name="ta-contenido" id="ta-contenido"></textarea>
+                    
+                    <div data-role="popup" id="confirmar-volver" data-corners="false">
+                        <p>¿Volver sin publicar?</p>
+                        <button class="si-no si">SÍ</button>
+                        <button class="si-no no">NO</button>
+                        <br>
+                    </div>
                 </div><!-- /content -->
 
                 <div data-role="footer">

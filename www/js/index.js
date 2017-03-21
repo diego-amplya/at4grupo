@@ -21,6 +21,12 @@ $(document).ready(function () { ////////////////////////////////////////////////
     // evento: clic en Iniciar sesión ------------------------------------------
     $('#login-btn').click(function (e) {
 
+        $.mobile.loading('show', {
+            text: "Accediendo...",
+            textVisible: true,
+            theme: "a"
+        });
+
         // Se recogen los datos del formulario
         nombre_usuario = $("#email").val();
         console.log(nombre_usuario);
@@ -45,18 +51,19 @@ $(document).ready(function () { ////////////////////////////////////////////////
         localStorage.upass = $("#contrasenya").val();
     });
 
-    // método: cerrar popup ----------------------------------------------------
-    $(".ok").click(function (e) {
-        $("#confimar-guardado-datos").popup("close");
-    });
-
     // evento: clic en proyecto ------------------------------------------------
     $('#lista-proyectos').on('click', 'li > a', function (e) {
+
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
 
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
         argumentos = {id: project_id, nombre: project_name};
-        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/posts/?categories=' + project_id;
+        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
 
         if (autor === true) {
@@ -69,6 +76,12 @@ $(document).ready(function () { ////////////////////////////////////////////////
     // evento: clic en entrada -------------------------------------------------
     $('#lista-entradas').on('click', 'li > a', function (e) {
 
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
+
         post_id = $(this).data('entrada-id');
         project_name = $(this).data('proyecto-nombre');
         argumentos = {id: post_id, nombre: project_name};
@@ -77,16 +90,26 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en Imagen destacada ----------------------------------------
-    $('#obtener-imagen-destacada').on('click', accessCamera);
+    //$('#obtener-imagen-destacada').on('click', accessCamera);
 
     // evento: clic en salir de edición ----------------------------------------
-    $('.btn-terminar-edicion').on('click', function () {
+    $('#confirmar-volver .si').on('click', function () {
 
         window.location.assign("#posts-list");
+    });
+    $('#confirmar-volver .no').on('click', function () {
+
+        $("#confirmar-volver").popup("close");
     });
 
     // evento: clic en Publicar ------------------------------------------------
     $('.btn-publicar').on('click', function () {
+
+        $.mobile.loading('show', {
+            text: "Enviando...",
+            textVisible: true,
+            theme: "a"
+        });
 
         var file_data = $("#imagen-destacada").prop("files")[0];
         console.log(file_data);
@@ -131,6 +154,10 @@ $(document).ready(function () { ////////////////////////////////////////////////
 
                 $.ajax(settings).done(function (response) {
                     console.log(response);
+
+                    argumentos = {id: sessionStorage.proyecto_id, nombre: sessionStorage.proyecto_nombre};
+                    url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+                    obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
                 });
 
             },
@@ -139,35 +166,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 console.log(textStatus + ' ' + errorThrown);
             }
         });
-
-        /*var options = {
-         categories: sessionStorage.proyecto_id,
-         content: $('#ta-contenido').val(),
-         featured_media: $('#imagen-destacada').attr('src'),
-         status: 'publish',
-         title: $('#titulo').val()
-         };
-         
-         console.log(options);
-         
-         var settings = {
-         "async": true,
-         "crossDomain": true,
-         "url": "http://dvl.franciscobosch.es/wp-json/wp/v2/posts/",
-         "method": "POST",
-         "headers": {
-         "authorization": "Basic VXN1YXJpbyBBMjpjb250cmFzZcOxYQ==",
-         "content-type": "application/json"
-         },
-         "processData": false,
-         "data": "{\r\n    \"status\": \"publish\",\r\n    \"content\": \"This is the content of the post\"\r\n}"
-         };
-         
-         $.ajax(settings).done(function (response) {
-         console.log(response);
-         });*/
-
-
     });
 
 
@@ -266,6 +264,7 @@ function mostrarEntradas(entradas, proyecto) {
     window.location.assign("#posts-list");
 
     sessionStorage.proyecto_id = proyecto.id;
+    sessionStorage.proyecto_nombre = proyecto.nombre;
 
     $('.titulo-proyecto').html(proyecto.nombre);
 

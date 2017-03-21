@@ -68,7 +68,8 @@ body {
   width: 95% !important;
 }
 
-#confimar-guardado-datos-screen {
+#confimar-guardado-datos-screen,
+#confirmar-volver-screen {
     background-color: rgba(0,0,0,.5);
 }
 
@@ -161,6 +162,10 @@ h1, h2, h3, h4, h5, h6  {
     padding:15px 10px 15px 50px;
     background-repeat: no-repeat;
     background-position: 10px center;
+}
+
+.si-no {
+    display: inline;
 }
 
 #single-post {
