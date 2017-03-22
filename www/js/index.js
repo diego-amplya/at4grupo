@@ -102,6 +102,12 @@ $(document).ready(function () { ////////////////////////////////////////////////
         $("#confirmar-volver").popup("close");
     });
 
+    // evento: cambio en un selector de archivo --------------------------------
+    $('#fotos').on('change', '.foto', function (e) {
+
+        $('#fotos').append('<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file" class="foto"></div>');
+    });
+
     // evento: clic en Publicar ------------------------------------------------
     $('.btn-publicar').on('click', function () {
 
@@ -133,7 +139,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 success: function (response, txtStatus, xhr) {
                     var ruta_foto = '<br><br><img src="' + response.source_url + '"  alt=""  class="alignnone size-full">';
                     rutas_fotos.push(ruta_foto);
-                    console.log(rutas_fotos);
                 },
                 error: function (textStatus, errorThrown) {
 
@@ -141,6 +146,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 }
             });
         });
+        console.log(rutas_fotos);
 
         var file_data = $("#imagen-destacada").prop("files")[0];
         console.log(file_data);
@@ -163,7 +169,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 console.log(response);
 
                 contenido = $('#ta-contenido').val();
-                $.each(rutas_fotos, function(key, value){
+                $.each(rutas_fotos, function (key, value) {
                     contenido += value;
                 });
                 console.log(contenido);
