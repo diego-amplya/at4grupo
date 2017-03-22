@@ -1,0 +1,265 @@
+/* CSS */
+
+a {
+    color: #013861 !important;
+    display: block;
+    text-decoration: none;
+}
+
+body {
+    color: #013861 !important;
+    font-family: 'Nunito Sans', sans-serif !important;
+    font-weight: 300 !important;
+    letter-spacing: .5px;
+    text-align: center !important;
+}
+
+.btn-crear-entrada {
+  background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-left-width: 3px;
+  box-sizing: border-box;
+  color: #ffffff !important;
+  display: none !important;
+  float: right;
+  font-size: 1.4em !important;
+  margin: 5px;
+  padding: 15px 20px;
+  text-align: right;
+  text-shadow: none;
+  width: 25% !important;
+}
+
+.btn-publicar {
+  background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-left-width: 3px;
+  box-sizing: border-box;
+  color: #ffffff !important;
+  display: block;
+  float: right;
+  font-size: 1.4em !important;
+  margin: 5px;
+  padding: 15px 10px;
+  text-align: right;
+  text-shadow: none;
+  width: 75% !important;
+}
+
+.btn-terminar-edicion {
+  background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-right-width: 3px;
+  box-sizing: border-box;
+  color: #ffffff !important;
+  display: block !important;
+  float: left;
+  font-size: 1.4em !important;
+  margin: 5px;
+  padding: 15px 20px;
+  text-align: left;
+  text-shadow: none;
+  width: 25% !important;
+}
+
+.btn-volver {
+  background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-right-width: 3px;
+  box-sizing: border-box;
+  color: #ffffff !important;
+  display: block;
+  float: left;
+  font-size: 1.4em !important;
+  margin: 5px;
+  padding: 15px 10px;
+  text-align: left;
+  text-shadow: none;
+  width: 100% !important;
+}
+
+#confimar-guardado-datos-screen,
+#confirmar-volver-screen {
+    background-color: rgba(0,0,0,.5);
+}
+
+#create-post {
+    text-align: left;
+}
+
+#create-post .ui-input-text {
+    margin-bottom: 15px !important;
+    width: 100% !important;
+}
+
+[data-role="footer"] {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+#enlace-web {
+    color: #013861;
+    font-size: 1.3em;
+    text-decoration: none;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../img/error.png');
+}
+
+.entradas-proyecto {
+    float: left;
+    width: 75%;
+}
+
+h1, h2, h3, h4, h5, h6  {
+    color: #013861 !important;
+}
+
+#imagen-destacada {
+    display: block;
+    margin: 15px auto;
+    width: 100%;
+}
+
+.imagen-proyecto {
+    float: left;
+    width: 25%;
+}
+
+.imagen-proyecto img {
+    
+    width: 100%;
+}
+
+input[type="checkbox"] {
+    opacity: 0;
+}
+
+.jqte_editor {
+    text-align: left !important;
+}
+
+#login-error,
+#disconnect-success,
+#disconnect-error {
+    display: none;
+}
+
+#lista-entradas {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    width: 98%;
+}
+
+#lista-entradas img {
+    width: 100%;
+}
+
+#lista-entradas li,
+#lista-proyectos li {
+    padding-bottom: 15px;
+}
+
+#lista-entradas span,
+#fecha-entrada {
+    color: #d2c8bc;
+    font-size: .8em;
+    margin-top: 0px;
+}
+
+#lista-proyectos {
+    padding: 0;
+    width: 85%;
+    margin: auto;
+    list-style: none;
+    text-align: left;
+}
+
+#lista-proyectos li {
+    overflow: hidden;
+}
+
+#lista-proyectos li a {
+    color: #013861 !important;
+    padding: 10px;
+    text-decoration: none;
+}
+
+#logo {
+    display: block;
+    margin: 20px auto;
+}
+
+.notifications {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+
+.si-no {
+    display: inline;
+}
+
+#single-post {
+    text-align: left;
+}
+
+#single-post img {
+    width: 100%;
+}
+
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('../img/success.png');
+}
+
+#titulo-entrada {
+    margin-bottom: 2px;
+}
+
+.titulo-proyecto {
+    border-bottom: 1px solid #d2c8bc;
+    margin: 70px auto 15px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.ui-btn {
+    background-color: #d2c8bc !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #ffffff !important;
+    font-weight: 300 !important;
+    letter-spacing: 1px;
+    margin: auto !important;
+    width: 75%;
+}
+
+.ui-header, .ui-footer {
+    background-color: transparent !important;
+    border: none;
+}
+
+.ui-input-text {
+    border: 1px solid #013861 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    box-sizing: border-box;
+    margin: auto !important;
+    padding: 6px;
+    width: 75%;
+}
+
+.ui-page {
+    background-color: #ffffff;
+}
