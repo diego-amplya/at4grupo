@@ -92,9 +92,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntrada, argumentos);
     });
 
-    // evento: clic en Imagen destacada ----------------------------------------
-    //$('#obtener-imagen-destacada').on('click', accessCamera);
-
     // evento: clic en salir de edición ----------------------------------------
     $('#confirmar-volver .si').on('click', function () {
 
@@ -112,6 +109,37 @@ $(document).ready(function () { ////////////////////////////////////////////////
             text: "Enviando...",
             textVisible: true,
             theme: "a"
+        });
+
+        fotos = $('.foto');
+        rutas_fotos = new Array();
+        $.each(fotos, function (indice, foto) {
+
+            var foto_data = $(foto).prop('files')[0];
+            var foto_form_data = new FormData();
+            foto_form_data.append("file", foto_data);
+            jQuery.ajax({
+                url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/',
+                method: 'POST',
+                crossDomain: true,
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: foto_form_data,
+                headers: {
+                    'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
+                    'content-disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
+                },
+                success: function (response, txtStatus, xhr) {
+                    var ruta_foto = '<br><br><img src="' + response.source_url + '"  alt=""  class="alignnone size-full">';
+                    rutas_fotos.push(ruta_foto);
+                    console.log(rutas_fotos);
+                },
+                error: function (textStatus, errorThrown) {
+
+                    console.log(textStatus + ' ' + errorThrown);
+                }
+            });
         });
 
         var file_data = $("#imagen-destacada").prop("files")[0];
@@ -132,11 +160,17 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 'content-disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
             },
             success: function (response, txtStatus, xhr) {
-                console.log(response.id);
+                console.log(response);
+
+                contenido = $('#ta-contenido').val();
+                $.each(rutas_fotos, function(key, value){
+                    contenido += value;
+                });
+                console.log(contenido);
 
                 var options = {
                     categories: sessionStorage.proyecto_id,
-                    content: $('#ta-contenido').val(),
+                    content: contenido,
                     featured_media: response.id,
                     status: 'publish',
                     title: $('#titulo').val()
@@ -243,6 +277,7 @@ function mostrarCategorias(categorias) {
     window.location.assign("#categories-list");
 
     var html = '';
+
     $.each(categorias, function (indice, proyecto) {
         console.log(proyecto);
         console.log(proyecto.slug);
