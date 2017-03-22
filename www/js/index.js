@@ -71,7 +71,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
 
         if (autor === true) {
             console.log('autor: ' + autor);
-            $('.btn-volver').attr('style', 'width: 72% !important');
+            $('.btn-volver').attr('style', 'width: 75% !important');
             $('.btn-crear-entrada').attr('style', 'display: block !important');
         }
     });

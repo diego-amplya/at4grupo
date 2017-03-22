@@ -16,19 +16,24 @@ body {
 
 .btn-crear-entrada {
   background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-left-width: 3px;
   box-sizing: border-box;
   color: #ffffff !important;
   display: none !important;
   float: right;
   font-size: 1.4em !important;
   margin: 5px;
-  padding: 15px 10px;
+  padding: 15px 20px;
+  text-align: right;
   text-shadow: none;
-  width: 22% !important;
+  width: 25% !important;
 }
 
 .btn-publicar {
   background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-left-width: 3px;
   box-sizing: border-box;
   color: #ffffff !important;
   display: block;
@@ -38,24 +43,29 @@ body {
   padding: 15px 10px;
   text-align: right;
   text-shadow: none;
-  width: 72% !important;
+  width: 75% !important;
 }
 
 .btn-terminar-edicion {
   background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-right-width: 3px;
   box-sizing: border-box;
   color: #ffffff !important;
   display: block !important;
   float: left;
   font-size: 1.4em !important;
   margin: 5px;
-  padding: 15px 10px;
+  padding: 15px 20px;
+  text-align: left;
   text-shadow: none;
-  width: 22% !important;
+  width: 25% !important;
 }
 
 .btn-volver {
   background-color: #d2c8bc;
+  border: 6px solid #fff;
+  border-right-width: 3px;
   box-sizing: border-box;
   color: #ffffff !important;
   display: block;
@@ -65,7 +75,7 @@ body {
   padding: 15px 10px;
   text-align: left;
   text-shadow: none;
-  width: 95% !important;
+  width: 100% !important;
 }
 
 #confimar-guardado-datos-screen,
@@ -80,6 +90,11 @@ body {
 #create-post .ui-input-text {
     margin-bottom: 15px !important;
     width: 100% !important;
+}
+
+[data-role="footer"] {
+    margin-bottom: 25px;
+    text-align: center;
 }
 
 #enlace-web {
