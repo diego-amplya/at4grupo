@@ -46,12 +46,14 @@ $(document).ready(function () { ////////////////////////////////////////////////
         // se llama a la función que recupera las categorías si el usuario es válido
         // esta misma función nos sirve de login pues, si el usuario no es válido,
         // no podrá acceder al resto de la aplicación
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories/?order=desc';
-        obtenerDatos(nombre_usuario, contrasenya, url, mostrarCategorias);
+        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
+        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategorias);
 
         // comprobar si el usuario es autor
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/users/me?context=edit';
-        obtenerDatos(nombre_usuario, contrasenya, url, habilitarAutor);
+        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/users/me?context=edit';
+        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, habilitarAutor);
     });
 
     // evento: clic en proyecto ------------------------------------------------
@@ -63,11 +65,13 @@ $(document).ready(function () { ////////////////////////////////////////////////
             theme: "a"
         });
 
+        // se recuperan las entradas del proyecto clicado
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
         argumentos = {id: project_id, nombre: project_name};
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
-        obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
+        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
 
         if (autor === true) {
             console.log('autor: ' + autor);
@@ -77,7 +81,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en entrada -------------------------------------------------
-    $('#lista-entradas').on('click', 'li > a', function (e) {
+    /*$('#lista-entradas').on('click', 'li > a', function (e) {
 
         $.mobile.loading('show', {
             text: "Cargando...",
@@ -88,9 +92,9 @@ $(document).ready(function () { ////////////////////////////////////////////////
         post_id = $(this).data('entrada-id');
         project_name = $(this).data('proyecto-nombre');
         argumentos = {id: post_id, nombre: project_name};
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/' + post_id;
+        url = 'http://proyectos.web-dvl.com/wp-json/wp/v2/posts/' + post_id;
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntrada, argumentos);
-    });
+    });*/
 
     // evento: clic en salir de edición ----------------------------------------
     $('#confirmar-volver .si').on('click', function () {
@@ -125,7 +129,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
             var foto_form_data = new FormData();
             foto_form_data.append("file", foto_data);
             jQuery.ajax({
-                url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/',
+                url: 'http://proyectos.web-dvl.com/wp-json/wp/v2/media/',
                 method: 'POST',
                 crossDomain: true,
                 contentType: false,
@@ -154,7 +158,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
         form_data.append("file", file_data);
 
         jQuery.ajax({
-            url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/',
+            url: 'http://proyectos.web-dvl.com/wp-json/wp/v2/media/',
             method: 'POST',
             crossDomain: true,
             contentType: false,
@@ -185,7 +189,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 var settings = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://clientes.at4grupo.es/wp-json/wp/v2/posts/",
+                    "url": "http://proyectos.web-dvl.com/wp-json/wp/v2/posts/",
                     "method": "POST",
                     "headers": {
                         'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
@@ -199,7 +203,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                     console.log(response);
 
                     argumentos = {id: sessionStorage.proyecto_id, nombre: sessionStorage.proyecto_nombre};
-                    url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+                    url = 'http://proyectos.web-dvl.com/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
                     obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
                 });
 
@@ -229,41 +233,33 @@ function onDeviceReady() {
  * @name obtenerDatos
  * @param {string} nombre_usuario
  * @param {string} contrasenya
- * @param {string} url
+ * @param {string} ws_url
+ * @param {string} wp_url
  * @param {string} callback
  * @param {any} argumentos
  * @returns {undefined}
  */
-function obtenerDatos(nombre_usuario, contrasenya, url, callback, argumentos) {
+function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, argumentos) {
 
     console.log('@obtenerDatos');
 
-    jQuery.ajax({
-        async: true,
-        crossDomain: true,
-        url: url,
-        method: 'GET',
-        headers: {
-                'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya)
+    $.post(ws_url,
+            {
+                data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
             },
-        success: function (data, txtStatus, xhr) {
-            console.log(data);
-            console.log(xhr.status);
+            function (data, txtStatus, xhr) {
+                console.log('Data: ', data);
+                data = JSON.parse(data);
 
-            // se llama a la función pasada como callback
-            if (argumentos === undefined) {
-
-                callback(data);
-            } else {
-
-                callback(data, argumentos);
-            }
-        },
-        error: function (textStatus, errorThrown) {
-
-            console.log(textStatus + ' ' + errorThrown);
-        }
-    });
+                // se llama a la función pasada como callback
+                if (argumentos === undefined) {
+                    // sin argumentos
+                    callback(data);
+                } else {
+                    // con argumentos
+                    callback(data, argumentos);
+                }
+            });
 }
 
 /**
@@ -319,7 +315,7 @@ function mostrarCategorias(categorias) {
 function mostrarEntradas(entradas, proyecto) {
 
     console.log('@mostrarEntradas');
-    console.log(proyecto);
+    // console.log(proyecto);
 
     $('#lista-entradas').html('');
     window.location.assign("#posts-list");
@@ -340,28 +336,11 @@ function mostrarEntradas(entradas, proyecto) {
                 '<span>' + entrada.modified.substr(0, 10) + '</span>' +
                 '<br>' +
                 '<br>' +
-                '<img src="" class="featured_img" data-featured-media="' + entrada.featured_media + '">' +
+                '<div class="cuerpo-entrada">' + entrada.content.rendered + '</div>' +
                 '</a>' +
                 '</li>';
         $('#lista-entradas').append(html);
-
-        jQuery.ajax({
-            url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/' + entrada.featured_media,
-            method: 'GET',
-            crossDomain: true,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya));
-            },
-            success: function (media, txtStatus, xhr) {
-                console.log(media);
-                console.log(xhr.status);
-                $('.featured_img[data-featured-media="' + media.id + '"]').attr('src', media.source_url);
-            },
-            error: function (textStatus, errorThrown) {
-
-                console.log(textStatus + ' ' + errorThrown);
-            }
-        });
+        $('.cuerpo-entrada img').attr('height', '');
     });
 }
 

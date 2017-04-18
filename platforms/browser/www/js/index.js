@@ -46,11 +46,11 @@ $(document).ready(function () { ////////////////////////////////////////////////
         // se llama a la función que recupera las categorías si el usuario es válido
         // esta misma función nos sirve de login pues, si el usuario no es válido,
         // no podrá acceder al resto de la aplicación
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories/?order=desc';
+        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/categories/?order=desc';
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarCategorias);
 
         // comprobar si el usuario es autor
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/users/me?context=edit';
+        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/users/me?context=edit';
         obtenerDatos(nombre_usuario, contrasenya, url, habilitarAutor);
     });
 
@@ -66,7 +66,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
         argumentos = {id: project_id, nombre: project_name};
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
 
         if (autor === true) {
@@ -88,7 +88,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
         post_id = $(this).data('entrada-id');
         project_name = $(this).data('proyecto-nombre');
         argumentos = {id: post_id, nombre: project_name};
-        url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/' + post_id;
+        url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/posts/' + post_id;
         obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntrada, argumentos);
     });
 
@@ -125,7 +125,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
             var foto_form_data = new FormData();
             foto_form_data.append("file", foto_data);
             jQuery.ajax({
-                url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/',
+                url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/',
                 method: 'POST',
                 crossDomain: true,
                 contentType: false,
@@ -154,7 +154,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
         form_data.append("file", file_data);
 
         jQuery.ajax({
-            url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/',
+            url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/',
             method: 'POST',
             crossDomain: true,
             contentType: false,
@@ -185,7 +185,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                 var settings = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://clientes.at4grupo.es/wp-json/wp/v2/posts/",
+                    "url": "http://dvl.franciscobosch.es/wp-json/wp/v2/posts/",
                     "method": "POST",
                     "headers": {
                         'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
@@ -199,7 +199,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                     console.log(response);
 
                     argumentos = {id: sessionStorage.proyecto_id, nombre: sessionStorage.proyecto_nombre};
-                    url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+                    url = 'http://dvl.franciscobosch.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
                     obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
                 });
 
@@ -346,7 +346,7 @@ function mostrarEntradas(entradas, proyecto) {
         $('#lista-entradas').append(html);
 
         jQuery.ajax({
-            url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/' + entrada.featured_media,
+            url: 'http://dvl.franciscobosch.es/wp-json/wp/v2/media/' + entrada.featured_media,
             method: 'GET',
             crossDomain: true,
             beforeSend: function (xhr) {
