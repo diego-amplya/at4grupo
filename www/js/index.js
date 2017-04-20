@@ -6,10 +6,10 @@ $(document).ready(function () { ////////////////////////////////////////////////
 
     $("textarea").jqte();
 
-    // Device Event Listener ---------------------------------------------------
+    // Device Event Listener ///////////////////////////////////////////////////
     document.addEventListener("deviceready", onDeviceReady, false);
 
-    // se recuperan los datos de acceso guardados ------------------------------
+    // se recuperan los datos de acceso guardados //////////////////////////////
     if (localStorage.uname !== undefined) {
         $("#email").val(localStorage.uname);
     }
@@ -18,7 +18,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
         $("#contrasenya").val(localStorage.upass);
     }
 
-    // evento: clic en Iniciar sesión ------------------------------------------
+    // evento: clic en Iniciar sesión //////////////////////////////////////////
     $('#login-btn').click(function (e) {
 
         $.mobile.loading('show', {
@@ -26,18 +26,15 @@ $(document).ready(function () { ////////////////////////////////////////////////
             textVisible: true,
             theme: "a"
         });
-
         // Se recogen los datos del formulario
         nombre_usuario = $("#email").val();
         console.log(nombre_usuario);
         contrasenya = $("#contrasenya").val();
         console.log(contrasenya);
-
         if ($('#guardar-datos').is(':checked')) {
 
             localStorage.uname = $("#email").val();
             localStorage.upass = $("#contrasenya").val();
-
         } else if ($('#guardar-datos').is(':not(:checked)')) {
 
             window.localStorage.clear();
@@ -49,14 +46,13 @@ $(document).ready(function () { ////////////////////////////////////////////////
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategorias);
-
         // comprobar si el usuario es autor
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/users/me?context=edit';
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, habilitarAutor);
     });
 
-    // evento: clic en proyecto ------------------------------------------------
+    // evento: clic en proyecto ////////////////////////////////////////////////
     $('#lista-proyectos').on('click', 'li a', function (e) {
 
         $.mobile.loading('show', {
@@ -64,7 +60,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
             textVisible: true,
             theme: "a"
         });
-
         // se recuperan las entradas del proyecto clicado
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
@@ -72,7 +67,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
-
         if (autor === true) {
             console.log('autor: ' + autor);
             $('.btn-volver').attr('style', 'width: 75% !important');
@@ -80,23 +74,64 @@ $(document).ready(function () { ////////////////////////////////////////////////
         }
     });
 
-    // evento: clic en entrada -------------------------------------------------
+    // evento: clic en crear entrada ///////////////////////////////////////////
+    $('.btn-crear-entrada').on('click', function (e) {
+        // se resetea el formulario
+        $('#titulo').val('');
+        $('.jqte_editor').html(''); // equivalente al textarea #ta-contenido
+        $('#fotos').html('<div class="foto"><button class="eliminar">X</button><input type="file" name="imagen"><img src="" style="display:none; width: 100%" /></div>');
+    });
+
+    // evento: clic para eliminar entrada //////////////////////////////////////
+    $('#lista-entradas').on('click', 'li > .eliminar', function (e) {
+
+        id = $(this).data('entrada-id');
+        //alert(id);
+        var eliminar = confirm("¿Eliminar esta entrada?");
+        if (eliminar === true) {
+            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_delete_post';
+            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/' + id;
+            $.post(ws_url,
+                    {
+                        data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
+                    },
+                    function (response, txtStatus, xhr) {
+                        console.log('Response: ', response);
+
+                        $.mobile.loading('show', {
+                            text: "Cargando...",
+                            textVisible: true,
+                            theme: "a"
+                        });
+                        // se refresca la lista de entradas
+                        project_id = sessionStorage.proyecto_id;
+                        project_name = sessionStorage.proyecto_nombre;
+                        argumentos = {id: project_id, nombre: project_name};
+                        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+                        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+
+                        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+                    });
+        }
+    });
+
+    // evento: clic en entrada /////////////////////////////////////////////////
     /*$('#lista-entradas').on('click', 'li > a', function (e) {
+     
+     $.mobile.loading('show', {
+     text: "Cargando...",
+     textVisible: true,
+     theme: "a"
+     });
+     
+     post_id = $(this).data('entrada-id');
+     project_name = $(this).data('proyecto-nombre');
+     argumentos = {id: post_id, nombre: project_name};
+     url = 'http://proyectos.web-dvl.com/wp-json/wp/v2/posts/' + post_id;
+     obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntrada, argumentos);
+     });*/
 
-        $.mobile.loading('show', {
-            text: "Cargando...",
-            textVisible: true,
-            theme: "a"
-        });
-
-        post_id = $(this).data('entrada-id');
-        project_name = $(this).data('proyecto-nombre');
-        argumentos = {id: post_id, nombre: project_name};
-        url = 'http://proyectos.web-dvl.com/wp-json/wp/v2/posts/' + post_id;
-        obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntrada, argumentos);
-    });*/
-
-    // evento: clic en salir de edición ----------------------------------------
+    // evento: clic en salir de edición ////////////////////////////////////////
     $('#confirmar-volver .si').on('click', function () {
 
         window.location.assign("#posts-list");
@@ -106,13 +141,22 @@ $(document).ready(function () { ////////////////////////////////////////////////
         $("#confirmar-volver").popup("close");
     });
 
-    // evento: cambio en un selector de archivo --------------------------------
-    $('#fotos').on('change', '.foto', function (e) {
+    // evento: cambio en un selector de archivo ////////////////////////////////
+    $('#fotos').on('change', '.foto input', function (e) {
 
-        $('#fotos').append('<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file" class="foto"></div>');
+        var tmppath = URL.createObjectURL(e.target.files[0]);
+        $(this).parents('.foto').children('img').fadeIn('fast').attr('src', tmppath);
+        $(this).parents('.foto').children('.eliminar').fadeIn('fast');
+        $(this).parents('.foto').children('div').css('display', 'none');
+        $('#fotos').append('<div class="foto"><button class="eliminar ui-btn ui-shadow ui-corner-all">X</button><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file"></div><img src="" style="display:none; width: 100%" /></div>');
     });
 
-    // evento: clic en Publicar ------------------------------------------------
+    // evento: click en eliminar foto del formulario ///////////////////////////
+    $('#fotos').on('click', '.foto button', function (e) {
+        $(this).parent().remove();
+    });
+
+    // evento: clic en Publicar ////////////////////////////////////////////////
     $('.btn-publicar').on('click', function () {
 
         $.mobile.loading('show', {
@@ -121,101 +165,89 @@ $(document).ready(function () { ////////////////////////////////////////////////
             theme: "a"
         });
 
-        fotos = $('.foto');
-        rutas_fotos = new Array();
-        $.each(fotos, function (indice, foto) {
+        var contenido = $('#ta-contenido').val();
+
+        var fotos = $('.foto input');
+        console.log('Fotos:', fotos);
+
+        var i = 0;
+
+        $.each(fotos, function (index, foto) {
 
             var foto_data = $(foto).prop('files')[0];
-            var foto_form_data = new FormData();
-            foto_form_data.append("file", foto_data);
-            jQuery.ajax({
-                url: 'http://proyectos.web-dvl.com/wp-json/wp/v2/media/',
-                method: 'POST',
-                crossDomain: true,
-                contentType: false,
-                processData: false,
-                cache: false,
-                data: foto_form_data,
-                headers: {
-                    'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
-                    'content-disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
-                },
-                success: function (response, txtStatus, xhr) {
-                    var ruta_foto = '<br><br><img src="' + response.source_url + '"  alt=""  class="alignnone size-full">';
-                    rutas_fotos.push(ruta_foto);
-                },
-                error: function (textStatus, errorThrown) {
+            //console.log('Foto:', foto_data);
 
-                    console.log(textStatus + ' ' + errorThrown);
-                }
-            });
-        });
-        console.log(rutas_fotos);
+            if (foto_data !== undefined) {
 
-        var file_data = $("#imagen-destacada").prop("files")[0];
-        console.log(file_data);
-        var form_data = new FormData();
-        form_data.append("file", file_data);
+                var formData = new FormData();
+                formData.append('name', nombre_usuario);
+                formData.append('password', contrasenya);
+                formData.append('url', 'http://clientes.at4grupo.es/wp-json/wp/v2/media/');
+                formData.append('photo', foto_data);
+                // Display the key/value pairs
+                //for (var pair of formData.entries()) {
+                //    console.log(pair[0] + ', ' + pair[1]);
+                //}
 
-        jQuery.ajax({
-            url: 'http://proyectos.web-dvl.com/wp-json/wp/v2/media/',
-            method: 'POST',
-            crossDomain: true,
-            contentType: false,
-            processData: false,
-            cache: false,
-            data: form_data,
-            headers: {
-                'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
-                'content-disposition': 'attachment; filename=' + $('#imagen-destacada').val(),
-            },
-            success: function (response, txtStatus, xhr) {
-                console.log(response);
+                $.ajax({
+                    async: true,
+                    crossDomain: true,
+                    url: "http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_photo",
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    mimeType: "multipart/form-data",
+                    data: formData,
+                    success: function (response, txtStatus, xhr) {
+                        response = JSON.parse(response);
+                        // console.log('Respuesta:', response);
+                        var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
+                        // console.log('Ruta foto:', ruta_foto);
 
-                contenido = $('#ta-contenido').val();
-                $.each(rutas_fotos, function (key, value) {
-                    contenido += value;
-                });
-                console.log(contenido);
+                        contenido = ruta_foto + contenido;
 
-                var options = {
-                    categories: sessionStorage.proyecto_id,
-                    content: contenido,
-                    featured_media: response.id,
-                    status: 'publish',
-                    title: $('#titulo').val()
-                };
+                        i++;
 
-                var settings = {
-                    "async": true,
-                    "crossDomain": true,
-                    "url": "http://proyectos.web-dvl.com/wp-json/wp/v2/posts/",
-                    "method": "POST",
-                    "headers": {
-                        'authorization': 'Basic ' + Base64.encode(nombre_usuario + ':' + contrasenya),
-                        "content-type": "application/json"
+                        if (i === (fotos.length - 1)) {
+
+                            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_post';
+
+                            var options = {
+                                name: nombre_usuario,
+                                password: contrasenya,
+                                url: 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/',
+                                status: 'publish',
+                                categories: sessionStorage.proyecto_id,
+                                title: $('#titulo').val(),
+                                content: contenido
+                            };
+                            options = JSON.stringify(options);
+                            $.post(ws_url,
+                                    {
+                                        data: options
+                                    },
+                                    function (response, txtStatus, xhr) {
+                                        console.log('Response: ', response);
+
+                                        // se refresca la lista de entradas
+                                        project_id = sessionStorage.proyecto_id;
+                                        project_name = sessionStorage.proyecto_nombre;
+                                        argumentos = {id: project_id, nombre: project_name};
+                                        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+                                        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+
+                                        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+                                    });
+                        } // end if
                     },
-                    "processData": false,
-                    "data": JSON.stringify(options)
-                };
+                    error: function (textStatus, errorThrown) {
 
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-
-                    argumentos = {id: sessionStorage.proyecto_id, nombre: sessionStorage.proyecto_nombre};
-                    url = 'http://proyectos.web-dvl.com/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
-                    obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntradas, argumentos);
+                        console.log(textStatus + ' ' + errorThrown);
+                    }
                 });
-
-            },
-            error: function (textStatus, errorThrown) {
-
-                console.log(textStatus + ' ' + errorThrown);
-            }
+            } // end if
         });
     });
-
-
 }); // Fin document ready //////////////////////////////////////////////////////
 
 /**
@@ -242,15 +274,13 @@ function onDeviceReady() {
 function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, argumentos) {
 
     console.log('@obtenerDatos');
-
     $.post(ws_url,
             {
                 data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
             },
             function (data, txtStatus, xhr) {
-                console.log('Data: ', data);
+                // console.log('Data: ', data);
                 data = JSON.parse(data);
-
                 // se llama a la función pasada como callback
                 if (argumentos === undefined) {
                     // sin argumentos
@@ -270,7 +300,6 @@ function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, arg
 function mostrarCategorias(categorias) {
 
     console.log('@mostrarCategorias');
-
     if (categorias.length < 2) {
 
         $.mobile.loading('hide');
@@ -278,15 +307,12 @@ function mostrarCategorias(categorias) {
         return false;
     }
     ;
-
     $('#login-error').css('display', 'none');
     window.location.assign("#categories-list");
-
     var html = '';
-
     $.each(categorias, function (indice, proyecto) {
-        console.log(proyecto);
-        console.log(proyecto.slug);
+        // console.log(proyecto);
+        // console.log(proyecto.slug);
         // El ID 1 corresponde a 'Sin Categoría'
         if (proyecto.id === 1) {
             return;
@@ -319,18 +345,16 @@ function mostrarEntradas(entradas, proyecto) {
 
     $('#lista-entradas').html('');
     window.location.assign("#posts-list");
-
     sessionStorage.proyecto_id = proyecto.id;
     sessionStorage.proyecto_nombre = proyecto.nombre;
-
     $('.titulo-proyecto').html(proyecto.nombre);
-
     $.each(entradas, function (indice, entrada) {
-        console.log(entrada);
+        // console.log(entrada);
 
         var html = '';
         html += '<li>' +
-                '<a href="#" data-proyecto-nombre="' + proyecto.nombre + '" data-entrada-id="' + entrada.id + '">' +
+                '<button class="eliminar ui-btn ui-shadow ui-corner-all" data-entrada-id="' + entrada.id + '">X</button>' +
+                '<a href="#" data-proyecto-nombre="' + proyecto.nombre + '">' +
                 entrada.title.rendered +
                 '<br>' +
                 '<span>' + entrada.modified.substr(0, 10) + '</span>' +
@@ -342,6 +366,13 @@ function mostrarEntradas(entradas, proyecto) {
         $('#lista-entradas').append(html);
         $('.cuerpo-entrada img').attr('height', '');
     });
+
+    // para el jefe de obra se muestra el botón de eliminar la entrada
+    if (autor === true) {
+        $('#lista-entradas > li > .eliminar').css('display', 'block');
+    }
+
+    $.mobile.loading("hide");
 }
 
 /**
@@ -351,9 +382,7 @@ function mostrarEntradas(entradas, proyecto) {
 function mostrarEntrada(entrada, proyecto) {
 
     console.log('@mostrarEntrada');
-
     window.location.assign("#single-post");
-
     $('.titulo-proyecto').html(proyecto.nombre);
     $('#titulo-entrada').html(entrada.title.rendered);
     $('#texto-entrada').html(entrada.content.rendered);
@@ -369,7 +398,6 @@ function mostrarEntrada(entrada, proyecto) {
 function habilitarAutor(registro) {
 
     console.log('@habilitarAutor');
-
     if (registro.roles[0] === 'author') {
 
         autor = true;

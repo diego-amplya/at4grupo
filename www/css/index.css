@@ -15,67 +15,67 @@ body {
 }
 
 .btn-crear-entrada {
-  background-color: #d2c8bc;
-  border: 6px solid #fff;
-  border-left-width: 3px;
-  box-sizing: border-box;
-  color: #ffffff !important;
-  display: none !important;
-  float: right;
-  font-size: 1.4em !important;
-  margin: 5px;
-  padding: 15px 20px;
-  text-align: right;
-  text-shadow: none;
-  width: 25% !important;
+    background-color: #d2c8bc;
+    border: 6px solid #fff;
+    border-left-width: 3px;
+    box-sizing: border-box;
+    color: #ffffff !important;
+    display: none !important;
+    float: right;
+    font-size: 1.4em !important;
+    margin: 5px;
+    padding: 15px 20px;
+    text-align: right;
+    text-shadow: none;
+    width: 25% !important;
 }
 
 .btn-publicar {
-  background-color: #d2c8bc;
-  border: 6px solid #fff;
-  border-left-width: 3px;
-  box-sizing: border-box;
-  color: #ffffff !important;
-  display: block;
-  float: right;
-  font-size: 1.4em !important;
-  margin: 5px;
-  padding: 15px 10px;
-  text-align: right;
-  text-shadow: none;
-  width: 75% !important;
+    background-color: #d2c8bc;
+    border: 6px solid #fff;
+    border-left-width: 3px;
+    box-sizing: border-box;
+    color: #ffffff !important;
+    display: block;
+    float: right;
+    font-size: 1.4em !important;
+    margin: 5px;
+    padding: 15px 10px;
+    text-align: right;
+    text-shadow: none;
+    width: 75% !important;
 }
 
 .btn-terminar-edicion {
-  background-color: #d2c8bc;
-  border: 6px solid #fff;
-  border-right-width: 3px;
-  box-sizing: border-box;
-  color: #ffffff !important;
-  display: block !important;
-  float: left;
-  font-size: 1.4em !important;
-  margin: 5px;
-  padding: 15px 20px;
-  text-align: left;
-  text-shadow: none;
-  width: 25% !important;
+    background-color: #d2c8bc;
+    border: 6px solid #fff;
+    border-right-width: 3px;
+    box-sizing: border-box;
+    color: #ffffff !important;
+    display: block !important;
+    float: left;
+    font-size: 1.4em !important;
+    margin: 5px;
+    padding: 15px 20px;
+    text-align: left;
+    text-shadow: none;
+    width: 25% !important;
 }
 
 .btn-volver {
-  background-color: #d2c8bc;
-  border: 6px solid #fff;
-  border-right-width: 3px;
-  box-sizing: border-box;
-  color: #ffffff !important;
-  display: block;
-  float: left;
-  font-size: 1.4em !important;
-  margin: 5px;
-  padding: 15px 10px;
-  text-align: left;
-  text-shadow: none;
-  width: 100% !important;
+    background-color: #d2c8bc;
+    border: 6px solid #fff;
+    border-right-width: 3px;
+    box-sizing: border-box;
+    color: #ffffff !important;
+    display: block;
+    float: left;
+    font-size: 1.4em !important;
+    margin: 5px;
+    padding: 15px 10px;
+    text-align: left;
+    text-shadow: none;
+    width: 100% !important;
 }
 
 #confimar-guardado-datos-screen,
@@ -114,6 +114,19 @@ body {
     width: 75%;
 }
 
+.foto {
+    position: relative;
+}
+
+.foto > .eliminar {
+    display: none;
+    width: 50px !important;
+    background-color: #c81717 !important;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 h1, h2, h3, h4, h5, h6  {
     color: #013861 !important;
 }
@@ -130,7 +143,7 @@ h1, h2, h3, h4, h5, h6  {
 }
 
 .imagen-proyecto img {
-    
+
     width: 100%;
 }
 
@@ -163,6 +176,16 @@ input[type="checkbox"] {
 #lista-entradas li,
 #lista-proyectos li {
     padding-bottom: 15px;
+    position: relative;
+}
+
+#lista-entradas > li > .eliminar {
+    display: none;
+    width: 50px !important;
+    background-color: #c81717 !important;
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
 #lista-entradas span,
