@@ -8,73 +8,72 @@ a {
 
 body {
     color: #013861 !important;
-    font-family: 'Nunito Sans', sans-serif !important;
+    font-family: 'ralewayextralight', sans-serif !important;
     font-weight: 300 !important;
     letter-spacing: .5px;
     text-align: center !important;
 }
 
 .btn-crear-entrada {
-    background-color: #d2c8bc;
-    border: 6px solid #fff;
-    border-left-width: 3px;
+    background: #d2c8bc url(../img/add-59x59.png) no-repeat right;
     box-sizing: border-box;
     color: #ffffff !important;
     display: none !important;
     float: right;
     font-size: 1.4em !important;
-    margin: 5px;
+    height: 59px;
     padding: 15px 20px;
+    right: 0;
     text-align: right;
     text-shadow: none;
+    top: 0;
     width: 25% !important;
+    z-index: 5;
 }
 
 .btn-publicar {
     background-color: #d2c8bc;
-    border: 6px solid #fff;
-    border-left-width: 3px;
     box-sizing: border-box;
     color: #ffffff !important;
     display: block;
     float: right;
     font-size: 1.4em !important;
-    margin: 5px;
     padding: 15px 10px;
+    right: 0;
     text-align: right;
     text-shadow: none;
+    top: 0;
     width: 75% !important;
 }
 
 .btn-terminar-edicion {
-    background-color: #d2c8bc;
-    border: 6px solid #fff;
-    border-right-width: 3px;
+    background: #d2c8bc url(../img/close-59x59.png) no-repeat left;
     box-sizing: border-box;
     color: #ffffff !important;
     display: block !important;
     float: left;
     font-size: 1.4em !important;
-    margin: 5px;
+    height: 59px;
+    left: 0;
     padding: 15px 20px;
     text-align: left;
     text-shadow: none;
+    top: 0;
     width: 25% !important;
 }
 
 .btn-volver {
     background-color: #d2c8bc;
-    border: 6px solid #fff;
-    border-right-width: 3px;
     box-sizing: border-box;
     color: #ffffff !important;
     display: block;
     float: left;
     font-size: 1.4em !important;
-    margin: 5px;
+    left: 0;
     padding: 15px 10px;
     text-align: left;
     text-shadow: none;
+    top: 0;
     width: 100% !important;
 }
 
@@ -93,7 +92,7 @@ body {
 }
 
 [data-role="footer"] {
-    margin-bottom: 25px;
+    height: 50px;
     text-align: center;
 }
 
@@ -111,7 +110,13 @@ body {
 
 .entradas-proyecto {
     float: left;
-    width: 75%;
+    width: 65%;
+}
+
+#exit {
+    color: #ff0000 !important;
+    height: 100%;
+    width: 100%;
 }
 
 .foto {
@@ -120,11 +125,12 @@ body {
 
 .foto > .eliminar {
     display: none;
-    width: 50px !important;
-    background-color: #c81717 !important;
+    background: #c81717 url(../img/close-59x59.png) no-repeat center !important;
+    height: 50px;
     position: absolute;
     right: 10px;
     top: 10px;
+    width: 50px !important;
 }
 
 h1, h2, h3, h4, h5, h6  {
@@ -139,7 +145,7 @@ h1, h2, h3, h4, h5, h6  {
 
 .imagen-proyecto {
     float: left;
-    width: 25%;
+    width: 35%;
 }
 
 .imagen-proyecto img {
@@ -158,6 +164,12 @@ input[type="checkbox"] {
 #login-error,
 #disconnect-success,
 #disconnect-error {
+    display: none;
+}
+
+li.enespera,
+li.enejecucion,
+li.finalizados {
     display: none;
 }
 
@@ -180,12 +192,13 @@ input[type="checkbox"] {
 }
 
 #lista-entradas > li > .eliminar {
+    background: #c81717 url(../img/close-59x59.png) no-repeat center !important;
     display: none;
-    width: 50px !important;
-    background-color: #c81717 !important;
+    height: 50px;
     position: absolute;
     right: 0px;
     top: 0px;
+    width: 50px !important;
 }
 
 #lista-entradas span,
@@ -195,19 +208,18 @@ input[type="checkbox"] {
     margin-top: 0px;
 }
 
-#lista-proyectos {
+.lista-proyectos {
     padding: 0;
-    width: 85%;
     margin: auto;
     list-style: none;
     text-align: left;
 }
 
-#lista-proyectos li {
+.lista-proyectos li {
     overflow: hidden;
 }
 
-#lista-proyectos li a {
+.lista-proyectos li a {
     color: #013861 !important;
     padding: 10px;
     text-decoration: none;
@@ -262,6 +274,7 @@ input[type="checkbox"] {
     box-shadow: none;
     box-sizing: border-box;
     color: #ffffff !important;
+    font-family: 'montserratextralight' !important;
     font-weight: 300 !important;
     letter-spacing: 1px;
     margin: auto !important;
@@ -271,6 +284,13 @@ input[type="checkbox"] {
 .ui-header, .ui-footer {
     background-color: transparent !important;
     border: none;
+}
+
+.ui-header-fullscreen,
+.ui-footer-fullscreen {
+    filter: Alpha(Opacity=100);
+    opacity: 1;
+    z-index: 10;
 }
 
 .ui-input-text {
@@ -283,6 +303,32 @@ input[type="checkbox"] {
     width: 75%;
 }
 
+.ui-overlay-a, 
+.ui-page-theme-a, 
+.ui-page-theme-a .ui-panel-wrapper {
+    background-color: white;
+}
+
 .ui-page {
     background-color: #ffffff;
+}
+
+/*********/
+/*
+[data-role=page] {
+    height: 100% !important;
+    position:relative !important;
+}
+
+[data-role=footer] {
+    background-color: #d2c8bc !important;
+    bottom:0; 
+    position:absolute !important; 
+    top: auto !important; 
+    width:100%;
+}
+*/
+
+[data-role=content]{
+    margin: 3%;
 }

@@ -46,7 +46,9 @@
     </head>
     <body>
         <div class="app">
+
             <!-- -------------------------------------------------------------------------->  
+
             <div data-role="page" id="login" data-theme="a">
                 <div data-role="header">
                     <img src="img/logo.jpg" id="logo">
@@ -76,26 +78,70 @@
                 <div data-role="footer">
                 </div><!-- /footer -->
             </div><!-- /page -->
+            
             <!-- -------------------------------------------------------------------------->  
-            <div data-role="page" id="categories-list">
+            
+            <div data-role="page" id="filters-page">
+                <div data-role="header">
+                    <img src="img/logo.jpg" id="logo">
+                </div><!-- /header -->
+
+                <div data-role="content">
+                    <h3>VER PROYECTOS</h3>
+                    <button class="btn-filter" data-filtro="todos">Todos</button>
+                    <br>
+                    <button class="btn-filter" data-filtro="enespera">En Espera</button>
+                    <br>
+                    <button class="btn-filter" data-filtro="enejecucion">En Ejecución</button>
+                    <br>
+                    <button class="btn-filter" data-filtro="finalizados">Finalizados</button>
+                </div><!-- /content -->
+
+                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
+                </div><!-- /footer -->                
+            </div><!-- /page -->
+            
+            <!-- -------------------------------------------------------------------------->  
+            
+            <div data-role="page" id="categories-list-author">
+                <div data-role="header" data-fullscreen="true" data-position="fixed">
+                    <a href="#filters-page" class="btn-volver" data-transition="slide">< Volver</a>
+                </div><!-- /header -->
+
+                <div data-role="content">
+                    <h3>PROYECTOS</h3>
+                    <ul class="lista-proyectos" id="lista-proyectos-jefeobra"></ul>
+                </div><!-- /content -->
+
+                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
+                </div><!-- /footer -->                
+            </div><!-- /page -->
+            
+            <!-- -------------------------------------------------------------------------->  
+            
+            <div data-role="page" id="categories-list-subscriber">
                 <div data-role="header">
                     <img src="img/logo.jpg" id="logo">
                 </div><!-- /header -->
 
                 <div data-role="content">
                     <h3>PROYECTOS</h3>
-                    <ul id="lista-proyectos"></ul>
+                    <ul class="lista-proyectos" id="lista-proyectos-cliente"></ul>
                 </div><!-- /content -->
 
-                <div data-role="footer">
-                    <button onclick="navigator.app.exitApp()">Salir</button>
+                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
+            
             <!-- -------------------------------------------------------------------------->
+            
             <div data-role="page" id="posts-list">
-                <div data-role="header">
-                    <a href="#categories-list" class="btn-volver" data-transition="slide">< Proyectos</a>
-                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"> + </a>
+                <div data-role="header" data-fullscreen="true" data-position="fixed">
+                    <a href="#" id="back-from-posts-list" class="btn-volver" data-transition="slide">< Proyectos</a>
+                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"></a>
                 </div><!-- /header -->
 
                 <div data-role="content">
@@ -103,15 +149,17 @@
                     <ul id="lista-entradas"></ul>
                 </div><!-- /content -->
 
-                <div data-role="footer">
-                    <button onclick="navigator.app.exitApp()">Salir</button>
+                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
+            
             <!-- -------------------------------------------------------------------------->  
-            <div data-role="page" id="single-post">
+
+            <div data-role="page" id="single-post" data-fullscreen="true" data-position="fixed">
                 <div data-role="header">
                     <a href="#posts-list" class="btn-volver" data-transition="slide">< Entradas</a>
-                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"> + </a>
+                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"></a>
                 </div><!-- /header -->
 
                 <div data-role="content">
@@ -121,14 +169,16 @@
                     <p id="texto-entrada"></p>
                 </div><!-- /content -->
 
-                <div data-role="footer">
-                    <button onclick="navigator.app.exitApp()">Salir</button>
+                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
+
             <!-- -------------------------------------------------------------------------->  
+            
             <div data-role="page" id="create-post">
-                <div data-role="header">
-                    <a href="#confirmar-volver" class="btn-terminar-edicion" data-rel="popup" data-transition="pop"> x </a>
+                <div data-role="header" data-fullscreen="true" data-position="fixed">
+                    <a href="#confirmar-volver" class="btn-terminar-edicion" data-rel="popup" data-transition="pop"></a>
                     <a href="#" class="btn-publicar">Publicar ></a>
                 </div><!-- /header -->
 
@@ -140,6 +190,8 @@
                     <div id="fotos"></div>
                     <h4>Texto:</h4>
                     <textarea name="ta-contenido" id="ta-contenido"></textarea>
+                    <br>
+                    <br>
 
                     <div data-role="popup" id="confirmar-volver" data-corners="false">
                         <p>¿Volver sin publicar?</p>
@@ -149,8 +201,8 @@
                     </div>
                 </div><!-- /content -->
 
-                <div data-role="footer">
-                    <button onclick="navigator.app.exitApp()">Salir</button>
+                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
 

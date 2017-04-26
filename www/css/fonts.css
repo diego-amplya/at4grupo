@@ -1,42 +1,68 @@
 @font-face {
-  font-family: 'Nunito Sans';
-  font-weight: 300;
-  font-style: normal;
-  src: url('/fonts/Nunito-Sans-300/Nunito-Sans-300.eot');
-  src: url('/fonts/Nunito-Sans-300/Nunito-Sans-300.eot?#iefix') format('embedded-opentype'),
-       local('Nunito Sans Light'),
-       local('Nunito-Sans-300'),
-       url('/fonts/Nunito-Sans-300/Nunito-Sans-300.woff2') format('woff2'),
-       url('/fonts/Nunito-Sans-300/Nunito-Sans-300.woff') format('woff'),
-       url('/fonts/Nunito-Sans-300/Nunito-Sans-300.ttf') format('truetype'),
-       url('/fonts/Nunito-Sans-300/Nunito-Sans-300.svg#NunitoSans') format('svg');
+    font-family: 'montserratbold';
+    src: url('../fonts/montserrat-bold-webfont.woff2') format('woff2'),
+         url('../fonts/montserrat-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
 
 @font-face {
-  font-family: 'Nunito Sans';
-  font-weight: 400;
-  font-style: normal;
-  src: url('/fonts/Nunito-Sans-regular/Nunito-Sans-regular.eot');
-  src: url('/fonts/Nunito-Sans-regular/Nunito-Sans-regular.eot?#iefix') format('embedded-opentype'),
-       local('Nunito Sans Regular'),
-       local('Nunito-Sans-regular'),
-       url('/fonts/Nunito-Sans-regular/Nunito-Sans-regular.woff2') format('woff2'),
-       url('/fonts/Nunito-Sans-regular/Nunito-Sans-regular.woff') format('woff'),
-       url('/fonts/Nunito-Sans-regular/Nunito-Sans-regular.ttf') format('truetype'),
-       url('/fonts/Nunito-Sans-regular/Nunito-Sans-regular.svg#NunitoSans') format('svg');
+    font-family: 'montserratextralight';
+    src: url('../fonts/montserrat-extralight-webfont.woff2') format('woff2'),
+         url('../fonts/montserrat-extralight-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
 
 @font-face {
-  font-family: 'Nunito Sans';
-  font-weight: 600;
-  font-style: normal;
-  src: url('/fonts/Nunito-Sans-600/Nunito-Sans-600.eot');
-  src: url('/fonts/Nunito-Sans-600/Nunito-Sans-600.eot?#iefix') format('embedded-opentype'),
-       local('Nunito Sans SemiBold'),
-       local('Nunito-Sans-600'),
-       url('/fonts/Nunito-Sans-600/Nunito-Sans-600.woff2') format('woff2'),
-       url('/fonts/Nunito-Sans-600/Nunito-Sans-600.woff') format('woff'),
-       url('/fonts/Nunito-Sans-600/Nunito-Sans-600.ttf') format('truetype'),
-       url('/fonts/Nunito-Sans-600/Nunito-Sans-600.svg#NunitoSans') format('svg');
+    font-family: 'montserratregular';
+    src: url('../fonts/montserrat-regular-webfont.woff2') format('woff2'),
+         url('../fonts/montserrat-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
+
+
+
+@font-face {
+    font-family: 'ralewaybold';
+    src: url('../fonts/raleway-bold-webfont.woff2') format('woff2'),
+         url('../fonts/raleway-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'ralewayextralight';
+    src: url('../fonts/raleway-extralight-webfont.woff2') format('woff2'),
+         url('../fonts/raleway-extralight-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'ralewayregular';
+    src: url('../fonts/raleway-regular-webfont.woff2') format('woff2'),
+         url('../fonts/raleway-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
