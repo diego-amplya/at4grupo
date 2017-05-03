@@ -57,26 +57,21 @@
                 <div data-role="content">
                     <!-- Mensaje avisando que falló el login -->
                     <div id="login-error" class="notifications error">Error en la autenticación.<br>Vuelva a intentarlo.</div>
-                    <input type="email" name="email" id="email" placeholder="email">
-                    <br>
+                    <input type="email" name="email" id="email" placeholder="e-mail">
                     <br>
                     <input type="password" name="contrasenya" id="contrasenya" placeholder="contraseña">
                     <br>
                     <br>
-                    <input type="submit" data-inline="false" data-mini="true" value="Iniciar sesión" id="login-btn" data-transition="slide">
                     <br>
-                    <br>
+                    <input type="submit" data-inline="false" data-mini="true" value="INICIAR SESIÓN" id="login-btn" data-transition="slide">
                     <div class="ui-checkbox">
-                        <label><input type="checkbox" name="guardar-datos" id="guardar-datos" checked="checked"> Guardar datos </label>
+                        <label id="guardar-datos-label"><input type="checkbox" name="guardar-datos" id="guardar-datos" checked="checked"> Guardar datos </label>
                     </div>
                     <br>
                     <br>
                     <a href="http://www.at4grupo.es" target="_blank" id="enlace-web">www.AT4grupo.es</a>
 
                 </div><!-- /content -->
-
-                <div data-role="footer">
-                </div><!-- /footer -->
             </div><!-- /page -->
             
             <!-- -------------------------------------------------------------------------->  
@@ -87,14 +82,16 @@
                 </div><!-- /header -->
 
                 <div data-role="content">
-                    <h3>VER PROYECTOS</h3>
-                    <button class="btn-filter" data-filtro="todos">Todos</button>
+                    <h3>PROYECTOS</h3>
+                    <button class="btn-filter" data-filtro="todos">TODOS</button>
                     <br>
-                    <button class="btn-filter" data-filtro="enespera">En Espera</button>
                     <br>
-                    <button class="btn-filter" data-filtro="enejecucion">En Ejecución</button>
                     <br>
-                    <button class="btn-filter" data-filtro="finalizados">Finalizados</button>
+                    <button class="btn-filter" data-filtro="enespera">EN ESPERA</button>
+                    <br>
+                    <button class="btn-filter" data-filtro="enejecucion">EN EJECUCIÓN</button>
+                    <br>
+                    <button class="btn-filter" data-filtro="finalizados">FINALIZADOS</button>
                 </div><!-- /content -->
 
                 <div data-role="footer" data-fullscreen="true" data-position="fixed">
@@ -110,6 +107,8 @@
                 </div><!-- /header -->
 
                 <div data-role="content">
+                    <br>
+                    <br>
                     <h3>PROYECTOS</h3>
                     <ul class="lista-proyectos" id="lista-proyectos-jefeobra"></ul>
                 </div><!-- /content -->
@@ -127,6 +126,8 @@
                 </div><!-- /header -->
 
                 <div data-role="content">
+                    <br>
+                    <br>
                     <h3>PROYECTOS</h3>
                     <ul class="lista-proyectos" id="lista-proyectos-cliente"></ul>
                 </div><!-- /content -->
@@ -146,6 +147,7 @@
 
                 <div data-role="content">
                     <h3 class="titulo-proyecto"></h3>
+                    <p class="prescriptor"></p>
                     <ul id="lista-entradas"></ul>
                 </div><!-- /content -->
 

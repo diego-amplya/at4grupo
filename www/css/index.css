@@ -14,55 +14,56 @@ body {
     text-align: center !important;
 }
 
-.btn-crear-entrada {
+html .btn-crear-entrada {
     background: #d2c8bc url(../img/add-59x59.png) no-repeat right;
     box-sizing: border-box;
     color: #ffffff !important;
     display: none !important;
     float: right;
     font-size: 1.4em !important;
-    height: 59px;
-    padding: 15px 20px;
+    height: 45px;
+    padding: 5px 20px;
     right: 0;
     text-align: right;
     text-shadow: none;
     top: 0;
     width: 25% !important;
-    z-index: 5;
+    z-index: 15 !important;
 }
 
-.btn-publicar {
+html .btn-publicar {
     background-color: #d2c8bc;
     box-sizing: border-box;
     color: #ffffff !important;
     display: block;
     float: right;
     font-size: 1.4em !important;
-    padding: 15px 10px;
+    padding: 10px;
     right: 0;
     text-align: right;
     text-shadow: none;
     top: 0;
-    width: 75% !important;
+    width: 100% !important;
 }
 
-.btn-terminar-edicion {
+html .btn-terminar-edicion {
     background: #d2c8bc url(../img/close-59x59.png) no-repeat left;
     box-sizing: border-box;
     color: #ffffff !important;
     display: block !important;
     float: left;
     font-size: 1.4em !important;
-    height: 59px;
+    height: 45px;
     left: 0;
-    padding: 15px 20px;
+    padding: 5px 20px;
     text-align: left;
     text-shadow: none;
     top: 0;
     width: 25% !important;
+    z-index: 15 !important;
 }
 
-.btn-volver {
+html .btn-volver {
     background-color: #d2c8bc;
     box-sizing: border-box;
     color: #ffffff !important;
@@ -70,7 +71,7 @@ body {
     float: left;
     font-size: 1.4em !important;
     left: 0;
-    padding: 15px 10px;
+    padding: 10px;
     text-align: left;
     text-shadow: none;
     top: 0;
@@ -92,7 +93,8 @@ body {
 }
 
 [data-role="footer"] {
-    height: 50px;
+    border-top: 2px solid #013861 !important;
+    height: 35px;
     text-align: center;
 }
 
@@ -113,10 +115,18 @@ body {
     width: 65%;
 }
 
+.entradas-proyecto span {
+    text-align: right;
+    display: block;
+    padding-right: 10px;
+    color: #d2c8bc;
+}
+
 #exit {
-    color: #ff0000 !important;
+    background-color: #ffffff !important;
+    color: #013861 !important;
     height: 100%;
-    width: 100%;
+    width: 100% !important;
 }
 
 .foto {
@@ -131,6 +141,12 @@ body {
     right: 10px;
     top: 10px;
     width: 50px !important;
+}
+
+#guardar-datos-label {
+    background-color: #ffffff !important;
+    color: #013861 !important;
+    width: 180px !important;
 }
 
 h1, h2, h3, h4, h5, h6  {
@@ -192,13 +208,14 @@ li.finalizados {
 }
 
 #lista-entradas > li > .eliminar {
-    background: #c81717 url(../img/close-59x59.png) no-repeat center !important;
+    background: #c81717 url(../img/close-28x28.png) no-repeat center !important;
     display: none;
-    height: 50px;
+    height: 28px;
+    padding: 0;
     position: absolute;
     right: 0px;
     top: 0px;
-    width: 50px !important;
+    width: 28px !important;
 }
 
 #lista-entradas span,
@@ -238,8 +255,9 @@ li.finalizados {
     background-position: 10px center;
 }
 
-.si-no {
+html .si-no {
     display: inline;
+    width: 100% !important;
 }
 
 #single-post {
@@ -261,10 +279,16 @@ li.finalizados {
 }
 
 .titulo-proyecto {
+    margin: 70px auto 5px;
+    text-align: center;
+}
+
+.prescriptor {
     border-bottom: 1px solid #d2c8bc;
-    margin: 70px auto 15px;
+    color: #d2c8bc;
+    font-size: .8em;
+    margin-bottom: 15px;
     padding-bottom: 10px;
-    text-align: left;
 }
 
 .ui-btn {
@@ -278,7 +302,7 @@ li.finalizados {
     font-weight: 300 !important;
     letter-spacing: 1px;
     margin: auto !important;
-    width: 75%;
+    width: 75% !important;
 }
 
 .ui-header, .ui-footer {
@@ -298,9 +322,17 @@ li.finalizados {
     border-radius: 0 !important;
     box-shadow: none !important;
     box-sizing: border-box;
+    height: 30px;
     margin: auto !important;
-    padding: 6px;
+    /*padding: 6px;*/
     width: 75%;
+}
+
+.ui-input-text input,
+.ui-input-search input {
+    line-height: 30px;
+    min-height: inherit;
+    padding: 0 4px;
 }
 
 .ui-overlay-a, 

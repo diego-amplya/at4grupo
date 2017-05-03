@@ -52,7 +52,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
 
         var estado = $(this).data('filtro');
         // se llama a la función que recupera las categorías
-        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategoriasJefeObra, estado);
     });
@@ -68,7 +68,8 @@ $(document).ready(function () { ////////////////////////////////////////////////
         // se recuperan las entradas del proyecto clicado
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
-        argumentos = {id: project_id, nombre: project_name};
+        project_prescriber = $(this).data('proyecto-prescriptor');
+        argumentos = {id: project_id, nombre: project_name, prescriptor: project_prescriber};
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
@@ -119,7 +120,8 @@ $(document).ready(function () { ////////////////////////////////////////////////
                         // se refresca la lista de entradas
                         project_id = sessionStorage.proyecto_id;
                         project_name = sessionStorage.proyecto_nombre;
-                        argumentos = {id: project_id, nombre: project_name};
+                        project_prescriber = sessionStorage.proyecto_prescriptor;
+                        argumentos = {id: project_id, nombre: project_name, prescriptor: project_prescriber};
                         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
                         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
 
@@ -160,8 +162,11 @@ $(document).ready(function () { ////////////////////////////////////////////////
         var tmppath = URL.createObjectURL(e.target.files[0]);
         $(this).parents('.foto').children('img').fadeIn('fast').attr('src', tmppath);
         $(this).parents('.foto').children('.eliminar').fadeIn('fast');
-        $(this).parents('.foto').children('div').css('display', 'none');
-        $('#fotos').append('<div class="foto"><button class="eliminar ui-btn ui-shadow ui-corner-all"></button><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file"></div><img src="" style="display:none; width: 100%" /></div>');
+        $(this).parents('.foto').children('input').css('display', 'none');
+        $(this).parents('.foto').children('div').css('display', 'none'); // esta
+        // línea es necesaria porque la primera vez que se inserta el html jQuery
+        // mobile envuelve el input en un div
+        $('#fotos').append('<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file"></div><img src="" style="display:none; width: 100%" /></div>');
     });
 
     // evento: click en eliminar foto del formulario ///////////////////////////
@@ -245,7 +250,8 @@ $(document).ready(function () { ////////////////////////////////////////////////
                                         // se refresca la lista de entradas
                                         project_id = sessionStorage.proyecto_id;
                                         project_name = sessionStorage.proyecto_nombre;
-                                        argumentos = {id: project_id, nombre: project_name};
+                                        project_prescriber = sessionStorage.proyecto_prescriptor;
+                                        argumentos = {id: project_id, nombre: project_name, prescriptor: project_prescriber};
                                         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
                                         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
 
@@ -332,7 +338,7 @@ function habilitarUsuario(registro) {
             $('#login-error').css('display', 'none');
 
             // se llama a la función que recupera las categorías
-            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
             wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategoriasCliente);
 
@@ -354,7 +360,7 @@ function habilitarUsuario(registro) {
  */
 function mostrarCategoriasJefeObra(categorias, estado) {
 
-    console.log('@mostrarCategorias');
+    console.log('@mostrarCategoriasJefeObra');
 
     window.location.assign("#categories-list-author");
 
@@ -365,15 +371,12 @@ function mostrarCategoriasJefeObra(categorias, estado) {
     $.each(categorias, function (indice, proyecto) {
         // console.log(proyecto);
         // console.log(proyecto.slug);
-        // El ID 1 corresponde a 'Sin Categoría'
-        if (proyecto.id === 1) {
-            return;
-        }
 
         var descripcion = proyecto.description.split('=');
         console.log(descripcion);
         proyecto_imagen = descripcion[0];
         proyecto_estado = descripcion[1];
+        proyecto_prescriptor = descripcion[2];
 
         switch (proyecto_estado) {
             case 'enespera':
@@ -382,7 +385,8 @@ function mostrarCategoriasJefeObra(categorias, estado) {
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
+                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
                 break;
@@ -392,7 +396,8 @@ function mostrarCategoriasJefeObra(categorias, estado) {
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
+                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
                 break;
@@ -402,7 +407,8 @@ function mostrarCategoriasJefeObra(categorias, estado) {
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
+                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
         }
@@ -444,73 +450,50 @@ function mostrarCategoriasCliente(categorias) {
     $.each(categorias, function (indice, proyecto) {
         // console.log(proyecto);
         // console.log(proyecto.slug);
-        // El ID 1 corresponde a 'Sin Categoría'
-        if (proyecto.id === 1) {
-            return;
+
+        var descripcion = proyecto.description.split('=');
+        console.log(descripcion);
+        proyecto_imagen = descripcion[0];
+        proyecto_estado = descripcion[1];
+        proyecto_prescriptor = descripcion[2];
+
+        switch (proyecto_estado) {
+            case 'enespera':
+                en_espera += '<li>' +
+                        '<div class="imagen-proyecto">' +
+                        '<img src="' + proyecto_imagen + '">' +
+                        '</div>' +
+                        '<div class="entradas-proyecto">' +
+                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<span>' + proyecto.date + '</span>' +
+                        '</div>' +
+                        '</li>';
+                break;
+            case 'enejecucion':
+                en_ejecucion += '<li>' +
+                        '<div class="imagen-proyecto">' +
+                        '<img src="' + proyecto_imagen + '">' +
+                        '</div>' +
+                        '<div class="entradas-proyecto">' +
+                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<span>' + proyecto.date + '</span>' +
+                        '</div>' +
+                        '</li>';
+                break;
+            default:
+                finalizados += '<li>' +
+                        '<div class="imagen-proyecto">' +
+                        '<img src="' + proyecto_imagen + '">' +
+                        '</div>' +
+                        '<div class="entradas-proyecto">' +
+                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<span>' + proyecto.date + '</span>' +
+                        '</div>' +
+                        '</li>';
         }
-
-        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
-        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?categories=' + proyecto.id;
-
-        $.post(ws_url,
-                {
-                    data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
-                },
-                function (data, txtStatus, xhr) {
-
-                    data = JSON.parse(data);
-                    console.log('Data: ', data);
-
-                    if (typeof data[0] !== 'undefined') {
-                        var ultima_fecha = data[0]['date'];
-                        console.log(ultima_fecha);
-                    }
-
-
-                    var descripcion = proyecto.description.split('=');
-                    console.log(descripcion);
-                    proyecto_imagen = descripcion[0];
-                    proyecto_estado = descripcion[1];
-
-                    switch (proyecto_estado) {
-                        case 'enespera':
-                            en_espera += '<li>' +
-                                    '<div class="imagen-proyecto">' +
-                                    '<img src="' + proyecto_imagen + '">' +
-                                    '</div>' +
-                                    '<div class="entradas-proyecto">' +
-                                    '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
-                                    '<span>' + ultima_fecha + '</span>' +
-                                    '</div>' +
-                                    '</li>';
-                            break;
-                        case 'enejecucion':
-                            en_ejecucion += '<li>' +
-                                    '<div class="imagen-proyecto">' +
-                                    '<img src="' + proyecto_imagen + '">' +
-                                    '</div>' +
-                                    '<div class="entradas-proyecto">' +
-                                    '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
-                                    '<span>' + ultima_fecha + '</span>' +
-                                    '</div>' +
-                                    '</li>';
-                            break;
-                        default:
-                            finalizados += '<li>' +
-                                    '<div class="imagen-proyecto">' +
-                                    '<img src="' + proyecto_imagen + '">' +
-                                    '</div>' +
-                                    '<div class="entradas-proyecto">' +
-                                    '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '">' + proyecto.name + '</a>' +
-                                    '<span>' + ultima_fecha + '</span>' +
-                                    '</div>' +
-                                    '</li>';
-                    }
-                    console.log(finalizados);
-                    $('#lista-proyectos-cliente').html('');
-                    $('#lista-proyectos-cliente').append(en_espera).append(en_ejecucion).append(finalizados);
-                });
     });
+    $('#lista-proyectos-cliente').html('');
+    $('#lista-proyectos-cliente').append(en_espera).append(en_ejecucion).append(finalizados);
 }
 
 /**
@@ -529,7 +512,9 @@ function mostrarEntradas(entradas, proyecto) {
     window.location.assign("#posts-list");
     sessionStorage.proyecto_id = proyecto.id;
     sessionStorage.proyecto_nombre = proyecto.nombre;
+    sessionStorage.proyecto_prescriptor = proyecto.prescriptor;
     $('.titulo-proyecto').html(proyecto.nombre);
+    $('.prescriptor').html(proyecto.prescriptor);
     $.each(entradas, function (indice, entrada) {
         // console.log(entrada);
 
@@ -539,7 +524,7 @@ function mostrarEntradas(entradas, proyecto) {
                 '<a href="#" data-proyecto-nombre="' + proyecto.nombre + '">' +
                 entrada.title.rendered +
                 '<br>' +
-                '<span>' + entrada.modified.substr(0, 10) + '</span>' +
+                '<span>' + entrada.modified.substr(0, 10).split('-').reverse().join('-') + '</span>' +
                 '<br>' +
                 '<br>' +
                 '<div class="cuerpo-entrada">' + entrada.content.rendered + '</div>' +
