@@ -82,7 +82,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
     // evento: clic en volver desde la lista de entradas ///////////////////////
     $('#back-from-posts-list').on('click', function () {
         if (autor === true) {
-            window.location.assign("#filters-page");
+            window.location.assign("#categories-list-author");
         } else {
             window.location.assign("#categories-list-subscriber");
         }
