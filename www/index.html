@@ -132,7 +132,7 @@
                     <ul class="lista-proyectos" id="lista-proyectos-cliente"></ul>
                 </div><!-- /content -->
 
-                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                <div data-role="footer" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
@@ -140,7 +140,7 @@
             <!-- -------------------------------------------------------------------------->
             
             <div data-role="page" id="posts-list">
-                <div data-role="header" data-fullscreen="true" data-position="fixed">
+                <div data-role="header" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <a href="#" id="back-from-posts-list" class="btn-volver" data-transition="slide">< Proyectos</a>
                     <a href="#create-post" class="btn-crear-entrada" data-transition="slide"></a>
                 </div><!-- /header -->
@@ -151,27 +151,7 @@
                     <ul id="lista-entradas"></ul>
                 </div><!-- /content -->
 
-                <div data-role="footer" data-fullscreen="true" data-position="fixed">
-                    <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
-                </div><!-- /footer -->                
-            </div><!-- /page -->
-            
-            <!-- -------------------------------------------------------------------------->  
-
-            <div data-role="page" id="single-post" data-fullscreen="true" data-position="fixed">
-                <div data-role="header">
-                    <a href="#posts-list" class="btn-volver" data-transition="slide">< Entradas</a>
-                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"></a>
-                </div><!-- /header -->
-
-                <div data-role="content">
-                    <h3 class="titulo-proyecto"></h3>
-                    <h4 id="titulo-entrada"></h4>
-                    <p id="fecha-entrada"></p>
-                    <p id="texto-entrada"></p>
-                </div><!-- /content -->
-
-                <div data-role="footer" data-fullscreen="true" data-position="fixed">
+                <div data-role="footer" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <button id="exit" onclick="navigator.app.exitApp()">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
@@ -212,7 +192,6 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
-        <script type="text/javascript" src="js/base64.js"></script>
         <script src="js/jquery-te-1.4.0.min.js" type="text/javascript"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
