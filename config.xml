@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.at4clientes" version="0.1.8" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.phonegap.at4clientes" version="0.1.9" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     
-    <name>AT4 Clientes</name>
+    <name>Clientes AT4</name>
     
     <description>
         Seguimiento de proyectos.
@@ -64,6 +64,10 @@
         <icon height="58" platform="ios" src="www/res/icon/ios/icon-small@2x.png" width="58" />
         <icon height="87" platform="ios" src="www/res/icon/ios/icon-small@3x.png" width="87" />
     </platform>
+    
+    <gap:config-file platform="ios" parent="NSPhotoLibraryUsageDescription" overwrite="true">
+        <string>Se accede a la Librería de Imágenes con la finalidad de enviar las imágenes  de los proyectos a nuestros clientes, manteniéndolos así informados del progreso. / We access the Photo Library to send the project images to our customers in order to keep them informed of progress.</string>
+    </gap:config-file>
     
     <access origin="*" />
     <allow-intent href="http://*/*" />

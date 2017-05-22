@@ -130,22 +130,6 @@ $(document).ready(function () { ////////////////////////////////////////////////
         }
     });
 
-    // evento: clic en entrada /////////////////////////////////////////////////
-    /*$('#lista-entradas').on('click', 'li > a', function (e) {
-     
-     $.mobile.loading('show', {
-     text: "Cargando...",
-     textVisible: true,
-     theme: "a"
-     });
-     
-     post_id = $(this).data('entrada-id');
-     project_name = $(this).data('proyecto-nombre');
-     argumentos = {id: post_id, nombre: project_name};
-     url = 'http://proyectos.web-dvl.com/wp-json/wp/v2/posts/' + post_id;
-     obtenerDatos(nombre_usuario, contrasenya, url, mostrarEntrada, argumentos);
-     });*/
-
     // evento: clic en salir de edición ////////////////////////////////////////
     $('#confirmar-volver .si').on('click', function () {
 
@@ -540,48 +524,4 @@ function mostrarEntradas(entradas, proyecto) {
     }
 
     $.mobile.loading("hide");
-}
-
-/**
- * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * @name mostrarEntrada
- */
-function mostrarEntrada(entrada, proyecto) {
-
-    console.log('@mostrarEntrada');
-    window.location.assign("#single-post");
-    $('.titulo-proyecto').html(proyecto.nombre);
-    $('#titulo-entrada').html(entrada.title.rendered);
-    $('#texto-entrada').html(entrada.content.rendered);
-    $('#fecha-entrada').html(entrada.modified.substr(0, 10));
-    $('#texto-entrada img').attr('height', '');
-}
-
-/**
- * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- */
-function obtenerUltimaFecha(proyecto_id) {
-
-    console.log('@obtenerUltimaFecha');
-
-    ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
-    wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?categories=' + proyecto_id;
-
-    $.post(ws_url,
-            {
-                data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
-            },
-            function (data, txtStatus, xhr) {
-
-                data = JSON.parse(data);
-                console.log('Data: ', data);
-
-                var fechas = [];
-                $.each(data, function (index, post) {
-                    fechas.push(post.date);
-                    console.log(fechas);
-                });
-
-                return fechas[0];
-            });
 }
