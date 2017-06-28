@@ -92,10 +92,20 @@ html .btn-volver {
     width: 100% !important;
 }
 
+[data-role="content"] {
+    margin: 3%;
+    padding-top: 50px !important;
+    padding-bottom: 100px !important;
+}
+
 [data-role="footer"] {
     border-top: 2px solid #013861 !important;
     height: 35px;
     text-align: center;
+}
+
+[data-role="header"] {
+    border-top: 30px solid #d2c8bc !important;
 }
 
 #enlace-web {
@@ -120,13 +130,6 @@ html .btn-volver {
     display: block;
     padding-right: 10px;
     color: #d2c8bc;
-}
-
-#exit {
-    background-color: #ffffff !important;
-    color: #013861 !important;
-    height: 100%;
-    width: 100% !important;
 }
 
 .foto {
@@ -233,6 +236,7 @@ li.finalizados {
 }
 
 .lista-proyectos li {
+    cursor: pointer;
     overflow: hidden;
 }
 
@@ -361,6 +365,9 @@ html .si-no {
 }
 */
 
-[data-role=content]{
-    margin: 3%;
+.exit {
+    background-color: #ffffff !important;
+    color: #013861 !important;
+    height: 100% !important;
+    width: 100% !important;
 }

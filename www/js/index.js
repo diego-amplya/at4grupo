@@ -58,7 +58,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en proyecto ////////////////////////////////////////////////
-    $('.lista-proyectos').on('click', 'li a', function (e) {
+    $('.lista-proyectos').on('click', 'li', function (e) {
 
         $.mobile.loading('show', {
             text: "Cargando...",
@@ -251,6 +251,12 @@ $(document).ready(function () { ////////////////////////////////////////////////
             } // end if
         });
     });
+    
+    // evento: click en Cerrar sesión //////////////////////////////////////////
+    $('.exit').on('click', function (e) {
+        location.assign('#login');
+    });
+    
 }); // Fin document ready //////////////////////////////////////////////////////
 
 /**
@@ -364,34 +370,34 @@ function mostrarCategoriasJefeObra(categorias, estado) {
 
         switch (proyecto_estado) {
             case 'enespera':
-                en_espera += '<li class="enespera">' +
+                en_espera += '<li class="enespera" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<a href="#">' + proyecto.name + '</a>' +
                         '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
                 break;
             case 'enejecucion':
-                en_ejecucion += '<li class="enejecucion">' +
+                en_ejecucion += '<li class="enejecucion" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<a href="#">' + proyecto.name + '</a>' +
                         '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
                 break;
             default:
-                finalizados += '<li class="finalizados">' +
+                finalizados += '<li class="finalizados" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<a href="#">' + proyecto.name + '</a>' +
                         '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
@@ -443,34 +449,34 @@ function mostrarCategoriasCliente(categorias) {
 
         switch (proyecto_estado) {
             case 'enespera':
-                en_espera += '<li>' +
+                en_espera += '<li data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<a href="#">' + proyecto.name + '</a>' +
                         '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
                 break;
             case 'enejecucion':
-                en_ejecucion += '<li>' +
+                en_ejecucion += '<li data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<a href="#">' + proyecto.name + '</a>' +
                         '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
                 break;
             default:
-                finalizados += '<li>' +
+                finalizados += '<li data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +
                         '</div>' +
                         '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
+                        '<a href="#">' + proyecto.name + '</a>' +
                         '<span>' + proyecto.date + '</span>' +
                         '</div>' +
                         '</li>';
