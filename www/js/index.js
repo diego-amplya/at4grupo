@@ -251,12 +251,48 @@ $(document).ready(function () { ////////////////////////////////////////////////
             } // end if
         });
     });
-    
+
+    // evento: clic en "Documental" ////////////////////////////////////////////
+    $('#view-documents').on('click', function (e) {
+
+        $.post('http://clientes.at4grupo.es/webservice/?function=get_documents_list',
+                {
+                    data: '{"id":"' + sessionStorage.proyecto_id + '"}'
+                },
+                function (data, txtStatus, xhr) {
+                    
+                    console.log('Docs: ', data, typeof data);
+
+                    if (data === 'false' || data === '[".",".."]') {
+
+                        $("#sin-resultados").popup('open');
+                        setTimeout(function(){ $( "#sin-resultados" ).popup( "close" ) }, 3000);
+
+                    } else {
+
+                        var docs = JSON.parse(data);
+                        docs.splice(0, 2);
+                        console.log('Data: ', docs);
+
+                        var html = '';
+
+                        $.each(docs, function (index, value) {
+
+                            html += '<li><a href="http://clientes.at4grupo.es/wp-content/uploads/0_PROYECTOS/' + sessionStorage.proyecto_id + '/' + value + '">' + value + '</a></li>';
+                        });
+
+                        $('#lista-documentos').html(html);
+
+                        window.location.assign('#documents');
+                    }
+                });
+    });
+
     // evento: click en Cerrar sesión //////////////////////////////////////////
     $('.exit').on('click', function (e) {
         location.assign('#login');
     });
-    
+
 }); // Fin document ready //////////////////////////////////////////////////////
 
 /**
@@ -391,7 +427,7 @@ function mostrarCategoriasJefeObra(categorias, estado) {
                         '</div>' +
                         '</li>';
                 break;
-            default:
+            case 'finalizado':
                 finalizados += '<li class="finalizados" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
                         '<div class="imagen-proyecto">' +
                         '<img src="' + proyecto_imagen + '">' +

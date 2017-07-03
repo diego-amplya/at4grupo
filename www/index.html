@@ -73,9 +73,9 @@
 
                 </div><!-- /content -->
             </div><!-- /page -->
-            
+
             <!-- -------------------------------------------------------------------------->  
-            
+
             <div data-role="page" id="filters-page">
                 <div data-role="header">
                     <img src="img/logo.jpg" id="logo">
@@ -98,9 +98,9 @@
                     <button class="exit">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
-            
+
             <!-- -------------------------------------------------------------------------->  
-            
+
             <div data-role="page" id="categories-list-author">
                 <div data-role="header" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <a href="#filters-page" class="btn-volver" data-transition="slide">< Volver</a>
@@ -117,9 +117,9 @@
                     <button class="exit">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
-            
+
             <!-- -------------------------------------------------------------------------->  
-            
+
             <div data-role="page" id="categories-list-subscriber">
                 <div data-role="header">
                     <img src="img/logo.jpg" id="logo">
@@ -136,9 +136,9 @@
                     <button class="exit">Cerrar sesión</button>
                 </div><!-- /footer -->                
             </div><!-- /page -->
-            
+
             <!-- -------------------------------------------------------------------------->
-            
+
             <div data-role="page" id="posts-list">
                 <div data-role="header" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <a href="#" id="back-from-posts-list" class="btn-volver" data-transition="slide">< Proyectos</a>
@@ -146,10 +146,15 @@
                 </div><!-- /header -->
 
                 <div data-role="content">
+                    <a href="#" id="view-documents">Documental</a>
                     <h3 class="titulo-proyecto"></h3>
                     <p class="prescriptor"></p>
                     <ul id="lista-entradas"></ul>
                 </div><!-- /content -->
+
+                <div data-role="popup" id="sin-resultados" data-corners="false" data-position-to="#view-documents">
+                    <p>No hay resultados que mostrar</p>
+                </div>
 
                 <div data-role="footer" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <button class="exit">Cerrar sesión</button>
@@ -157,7 +162,7 @@
             </div><!-- /page -->
 
             <!-- -------------------------------------------------------------------------->  
-            
+
             <div data-role="page" id="create-post">
                 <div data-role="header" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
                     <a href="#confirmar-volver" class="btn-terminar-edicion" data-rel="popup" data-transition="pop"></a>
@@ -181,6 +186,25 @@
                         <button class="si-no no">NO</button>
                         <br>
                     </div>
+                </div><!-- /content -->
+
+                <div data-role="footer" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
+                    <button class="exit">Cerrar sesión</button>
+                </div><!-- /footer -->                
+            </div><!-- /page -->
+
+            <!-- -------------------------------------------------------------------------->
+
+            <div data-role="page" id="documents">
+                <div data-role="header" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">
+                    <a href="#" id="back-from-documents" class="btn-volver" data-transition="slide" onclick="history.back()">< Volver</a>
+                    <a href="#create-post" class="btn-crear-entrada" data-transition="slide"></a>
+                </div><!-- /header -->
+
+                <div data-role="content">
+                    <h3 class="titulo-proyecto"></h3>
+                    <p class="prescriptor"></p>
+                    <ul id="lista-documentos"></ul>
                 </div><!-- /content -->
 
                 <div data-role="footer" data-fullscreen="true" data-position="fixed" data-tap-toggle="false" data-hide-during-focus="">

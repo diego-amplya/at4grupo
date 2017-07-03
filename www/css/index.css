@@ -192,6 +192,23 @@ li.finalizados {
     display: none;
 }
 
+#lista-documentos{
+    list-style: none;
+    padding-left: 0;
+    text-align: left;
+}
+
+#lista-documentos li {
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    background-color: #eee;
+    margin: .5em;
+    padding: .3em;
+    height: 1.6em;
+    border-radius: 4px;
+}
+
 #lista-entradas {
     margin: 0;
     padding: 0;
@@ -270,6 +287,11 @@ html .si-no {
 
 #single-post img {
     width: 100%;
+}
+
+#sin-resultados {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
 }
 
 .success {
