@@ -103,11 +103,11 @@ html .btn-volver {
     height: 35px;
     text-align: center;
 }
-
+/*
 [data-role="header"] {
-    border-top: 30px solid #d2c8bc !important;
+    border-top: 20px solid #d2c8bc !important;
 }
-
+*/
 #enlace-web {
     color: #013861;
     font-size: 1.3em;
