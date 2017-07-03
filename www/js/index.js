@@ -305,7 +305,7 @@ function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, arg
 
 /**
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * @name habilitarAutor
+ * @name habilitarUsuario
  * @param {object} registro 
  */
 function habilitarUsuario(registro) {
