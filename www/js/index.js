@@ -53,7 +53,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
         var estado = $(this).data('filtro');
         // se llama a la función que recupera las categorías
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
-        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
+        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?per_page=100&amp;order=desc';
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategoriasJefeObra, estado);
     });
 
@@ -365,7 +365,7 @@ function habilitarUsuario(registro) {
 
             // se llama a la función que recupera las categorías
             ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
-            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
+            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?per_page=100&amp;order=desc';
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategoriasCliente);
 
         }
