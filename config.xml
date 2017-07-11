@@ -35,7 +35,7 @@
     <plugin name="cordova-plugin-inappbrowser" source="npm" spec="~1.3.0" />
     <plugin name="cordova-plugin-media" source="npm" spec="~2.2.0" />
     <plugin name="cordova-plugin-network-information" source="npm" spec="~1.2.0" />
-    <!--plugin name="cordova-plugin-splashscreen" source="npm" spec="~3.2.1" /-->
+    <plugin name="cordova-plugin-splashscreen" source="npm" spec="~3.2.1" />
     <plugin name="cordova-plugin-statusbar" source="npm" spec="~2.1.2" />
     <plugin name="cordova-plugin-vibration" source="npm" spec="~2.1.0" />
     <plugin name="cordova-plugin-whitelist" source="npm" spec="~1.2.1" />
@@ -66,6 +66,16 @@
         <icon height="29" platform="ios" src="www/res/icon/ios/icon-small.png" width="29" />
         <icon height="58" platform="ios" src="www/res/icon/ios/icon-small@2x.png" width="58" />
         <icon height="87" platform="ios" src="www/res/icon/ios/icon-small@3x.png" width="87" />
+        <splash src="www/res/screen/ios/Default-568h@2x~iphone.png" width="640" platform="ios" height="1136"/>
+        <splash src="www/res/screen/ios/Default-667h.png" width="750" platform="ios" height="1334"/>
+        <splash src="www/res/screen/ios/Default-736h.png" width="1242" platform="ios" height="2208"/>
+        <splash src="www/res/screen/ios/Default-Landscape-736h.png" width="2208" platform="ios" height="1242"/>
+        <splash src="www/res/screen/ios/Default-Landscape@2x~ipad.png" width="2048" platform="ios" height="1536"/>
+        <splash src="www/res/screen/ios/Default-Landscape~ipad.png" width="1024" platform="ios" height="768"/>
+        <splash src="www/res/screen/ios/Default-Portrait@2x~ipad.png" width="1536" platform="ios" height="2048"/>
+        <splash src="www/res/screen/ios/Default-Portrait~ipad.png" width="768" platform="ios" height="1024"/>
+        <splash src="www/res/screen/ios/Default@2x~iphone.png" width="640" platform="ios" height="960"/>
+        <splash src="www/res/screen/ios/Default~iphone.png" width="320" platform="ios" height="480"/>
     </platform>
     
     <gap:config-file platform="ios" parent="NSPhotoLibraryUsageDescription" overwrite="true">
@@ -89,3 +99,4 @@
         <allow-intent href="itms-apps:*" />
     </platform>
 </widget>
+
