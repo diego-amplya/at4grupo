@@ -387,6 +387,7 @@ function habilitarUsuario(registro) {
 function mostrarCategoriasJefeObra(categorias, estado) {
 
     console.log('@mostrarCategoriasJefeObra');
+    console.log(categorias);
 
     window.location.assign("#categories-list-author");
 
