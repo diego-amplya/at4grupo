@@ -26,6 +26,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
             textVisible: true,
             theme: "a"
         });
+
         // Se recogen los datos del formulario
         nombre_usuario = $("#email").val();
         console.log(nombre_usuario);
@@ -48,7 +49,13 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en un filtro del jefe de obra //////////////////////////////
-    $('.btn-filter').on('click', function () {
+    $('.btn-filter').on('click', function ()
+    {
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
 
         var estado = $(this).data('filtro');
         // se llama a la función que recupera las categorías
@@ -65,6 +72,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
             textVisible: true,
             theme: "a"
         });
+
         // se recuperan las entradas del proyecto clicado
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
@@ -80,7 +88,14 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en volver desde la lista de entradas ///////////////////////
-    $('#back-from-posts-list').on('click', function () {
+    $('#back-from-posts-list').on('click', function ()
+    {
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
+
         if (autor === true) {
             window.location.assign("#categories-list-author");
         } else {
@@ -89,7 +104,8 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en crear entrada ///////////////////////////////////////////
-    $('.btn-crear-entrada').on('click', function (e) {
+    $('.btn-crear-entrada').on('click', function (e)
+    {
         // se resetea el formulario
         $('#titulo').val('');
         $('.jqte_editor').html(''); // equivalente al textarea #ta-contenido
@@ -117,6 +133,7 @@ $(document).ready(function () { ////////////////////////////////////////////////
                             textVisible: true,
                             theme: "a"
                         });
+
                         // se refresca la lista de entradas
                         project_id = sessionStorage.proyecto_id;
                         project_name = sessionStorage.proyecto_nombre;
@@ -253,7 +270,13 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en "Documental" ////////////////////////////////////////////
-    $('#view-documents').on('click', function (e) {
+    $('#view-documents').on('click', function (e)
+    {
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
 
         $.post('http://clientes.at4grupo.es/webservice/?function=get_documents_list',
                 {
