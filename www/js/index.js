@@ -649,7 +649,7 @@ function mostrarEntradas(entradas, proyecto)
             '<a href="#" data-proyecto-nombre="' + proyecto.nombre + '">' +
             entrada.title.rendered +
             '<br>' +
-            '<span>' + entrada.modified.substr(0, 10).split('-').reverse().join('-') + '</span>' +
+            '<span>' + entrada.date.substr(0, 10).split('-').reverse().join('-') + '</span>' +
             '<br>' +
             '<br>' +
             '<div class="cuerpo-entrada">' + entrada.content.rendered + '</div>' +
