@@ -1,6 +1,8 @@
-$(document).ready(function ()
-{ ////////////////////////////////////////////////
+var camera = {};
+camera.images = [];
 
+$(document).ready(function ()
+{
     autor = false;
     nombre_usuario = undefined;
     contraseña = undefined;
@@ -112,17 +114,16 @@ $(document).ready(function ()
         // se resetea el formulario
         $('#titulo').val('');
         $('.jqte_editor').html(''); // equivalente al textarea #ta-contenido
-        $('#fotos').html('<div class="foto"><button class="eliminar"></button><input type="file" name="imagen"><img src="" style="display:none; width: 100%" /></div>');
     });
 
-    // evento: clic para editar una entrada (sólo el título)
+    // evento: clic para editar una entrada (sólo el título) ///////////////////
     $('#lista-entradas').on('click', 'li > a.editar', function (e)
     {
         $('#editar-titulo input').val($(this).data('entrada-titulo'));
         $('#editar-titulo button').data('entrada-id', $(this).data('entrada-id'));
     });
 
-    // evento: clic para guardar la modificación del título
+    // evento: clic para guardar la modificación del título ////////////////////
     $('#editar-titulo button').on('click', function (e)
     {
         $.mobile.loading('show', {
@@ -202,28 +203,18 @@ $(document).ready(function ()
     // evento: clic en salir de edición ////////////////////////////////////////
     $('#confirmar-volver .si').on('click', function ()
     {
-
         window.location.assign("#posts-list");
     });
     $('#confirmar-volver .no').on('click', function ()
     {
-
         $("#confirmar-volver").popup("close");
     });
 
-    // evento: cambio en un selector de archivo ////////////////////////////////
-    $('#fotos').on('change', '.foto input', function (e)
-    {
+    // evento: clic en adquirir imagen desde la cámara /////////////////////////
+    $('#origen-camara').on('click', getPictureFromCamera);
 
-        var tmppath = URL.createObjectURL(e.target.files[0]);
-        $(this).parents('.foto').children('img').fadeIn('fast').attr('src', tmppath);
-        $(this).parents('.foto').children('.eliminar').fadeIn('fast');
-        $(this).parents('.foto').children('input').css('display', 'none');
-        $(this).parents('.foto').children('div').css('display', 'none'); // esta
-        // línea es necesaria porque la primera vez que se inserta el html jQuery
-        // mobile envuelve el input en un div
-        $('#fotos').append('<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file"></div><img src="" style="display:none; width: 100%" /></div>');
-    });
+    // evento: clic en adquirir imagen desde la librería ///////////////////////
+    $('#origen-libreria').on('click', getPictureFromLibrary);
 
     // evento: click en eliminar foto del formulario ///////////////////////////
     $('#fotos').on('click', '.foto button', function (e)
@@ -322,7 +313,6 @@ $(document).ready(function ()
                     },
                     error: function (textStatus, errorThrown)
                     {
-
                         console.log(textStatus + ' ' + errorThrown);
                     }
                 });
@@ -350,6 +340,7 @@ $(document).ready(function ()
 
                 if (data === 'false' || data === '[".",".."]') {
 
+                    $.mobile.loading('hide');
                     $("#sin-resultados").popup('open');
                     setTimeout(function () { $("#sin-resultados").popup("close"); }, 3000);
 
@@ -666,4 +657,74 @@ function mostrarEntradas(entradas, proyecto)
     }
 
     $.mobile.loading("hide");
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name getPictureFromCamera
+ */
+function getPictureFromCamera()
+{
+    $("#origen-imagen").popup("close");
+
+    navigator.camera.getPicture(onSuccess, onFail, {
+        quality: 50,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        destinationType: Camera.DestinationType.FILE_URI,
+        encodingType: Camera.EncodingType.JPEG,
+        //allowEdit: true,
+        correctOrientation: true,
+        targetWidth: 1920,
+        targetHeight: 1920
+    });
+
+    function onSuccess(imageData)
+    {
+        camera.images.push(imageData);
+        fileName = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
+        var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + imageData + '"></div>';
+        console.log(img);
+        $('#fotos').append(img);
+        console.log(camera.images);
+    }
+
+    function onFail(message)
+    {
+        alert('Hubo un problema al adquirir la imagen.');
+    }
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name getPictureFromLibrary
+ */
+function getPictureFromLibrary()
+{
+    $("#origen-imagen").popup("close");
+    
+    navigator.camera.getPicture(onSuccess, onFail, {
+        quality: 50,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        destinationType: Camera.DestinationType.FILE_URI,
+        encodingType: Camera.EncodingType.JPEG,
+        //allowEdit: true,
+        correctOrientation: true,
+        targetWidth: 1920,
+        targetHeight: 1920
+    });
+
+    function onSuccess(imageData)
+    {
+        camera.images.push(imageData);
+        fileName = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
+         var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + imageData + '"></div>';
+        console.log(img);
+        $('#fotos').append(img);
+        console.log(camera.images);
+    }
+
+    function onFail(message)
+    {
+        alert('Hubo un problema al adquirir la imagen.');
+    }
 }
