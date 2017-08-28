@@ -113,6 +113,7 @@ $(document).ready(function ()
     {
         // se resetea el formulario
         $('#titulo').val('');
+        $('#fotos').html('');
         $('.jqte_editor').html(''); // equivalente al textarea #ta-contenido
     });
 
@@ -223,17 +224,7 @@ $(document).ready(function ()
     });
 
     // evento: clic en Publicar ////////////////////////////////////////////////
-    $('.btn-publicar').on('click', function ()
-    {
-
-        $.mobile.loading('show', {
-            text: "Subiendo imágenes...",
-            textVisible: true,
-            theme: "a"
-        });
-
-        uploadPics(nombre_usuario, contrasenya);
-    });
+    $('.btn-publicar').on('click', uploadPics(nombre_usuario, contrasenya));
 
     // evento: clic en "Documental" ////////////////////////////////////////////
     $('#view-documents').on('click', function (e)
@@ -655,6 +646,12 @@ function getPictureFromLibrary()
  */
 function uploadPics(nombre_usuario, contrasenya)
 {
+    $.mobile.loading('show', {
+        text: "Subiendo imágenes...",
+        textVisible: true,
+        theme: "a"
+    });
+
     var contenido = $('#ta-contenido').val();
 
     console.log("Ok, going to upload " + camera.images.length);
@@ -714,6 +711,58 @@ function uploadPics(nombre_usuario, contrasenya)
     {
         console.log("All images updated");
         console.log(arguments);
+        $.mobile.loading('hide');
+        insertPost(nombre_usuario, contrasenya, contenido);
     });
 
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name insertPost
+ * @param {string} nombre_usuario
+ * @param {string} contraseña
+ * @param {string} contenido
+ * @returns {undefined}
+ */
+function insertPost(nombre_usuario, contrasenya)
+{
+    $.mobile.loading('show', {
+        text: "Creando entrada...",
+        textVisible: true,
+        theme: "a"
+    });
+
+    ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_post';
+
+    var options = {
+        name: nombre_usuario,
+        password: contrasenya,
+        url: 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/',
+        status: 'publish',
+        categories: sessionStorage.proyecto_id,
+        title: $('#titulo').val(),
+        content: contenido
+    };
+
+    options = JSON.stringify(options);
+    
+    $.post(ws_url,
+        {
+            data: options
+        },
+        function (response, txtStatus, xhr)
+        {
+            console.log('Response: ', response);
+
+            // se refresca la lista de entradas
+            project_id = sessionStorage.proyecto_id;
+            project_name = sessionStorage.proyecto_nombre;
+            project_prescriber = sessionStorage.proyecto_prescriptor;
+            argumentos = { id: project_id, nombre: project_name, prescriptor: project_prescriber };
+            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+
+            obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+        });
 }
