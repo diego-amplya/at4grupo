@@ -227,97 +227,12 @@ $(document).ready(function ()
     {
 
         $.mobile.loading('show', {
-            text: "Enviando...",
+            text: "Subiendo imágenes...",
             textVisible: true,
             theme: "a"
         });
 
-        var contenido = $('#ta-contenido').val();
-
-        var fotos = $('.foto input');
-        console.log('Fotos:', fotos);
-
-        var i = 0;
-
-        $.each(fotos, function (index, foto)
-        {
-
-            var foto_data = $(foto).prop('files')[0];
-            //console.log('Foto:', foto_data);
-
-            if (foto_data !== undefined) {
-
-                var formData = new FormData();
-                formData.append('name', nombre_usuario);
-                formData.append('password', contrasenya);
-                formData.append('url', 'http://clientes.at4grupo.es/wp-json/wp/v2/media/');
-                formData.append('photo', foto_data);
-                // Display the key/value pairs
-                //for (var pair of formData.entries()) {
-                //    console.log(pair[0] + ', ' + pair[1]);
-                //}
-
-                $.ajax({
-                    async: true,
-                    crossDomain: true,
-                    url: "http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_photo",
-                    method: "POST",
-                    processData: false,
-                    contentType: false,
-                    mimeType: "multipart/form-data",
-                    data: formData,
-                    success: function (response, txtStatus, xhr)
-                    {
-                        response = JSON.parse(response);
-                        // console.log('Respuesta:', response);
-                        var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
-                        // console.log('Ruta foto:', ruta_foto);
-
-                        contenido = ruta_foto + contenido;
-
-                        i++;
-
-                        if (i === (fotos.length - 1)) {
-
-                            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_post';
-
-                            var options = {
-                                name: nombre_usuario,
-                                password: contrasenya,
-                                url: 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/',
-                                status: 'publish',
-                                categories: sessionStorage.proyecto_id,
-                                title: $('#titulo').val(),
-                                content: contenido
-                            };
-                            options = JSON.stringify(options);
-                            $.post(ws_url,
-                                {
-                                    data: options
-                                },
-                                function (response, txtStatus, xhr)
-                                {
-                                    console.log('Response: ', response);
-
-                                    // se refresca la lista de entradas
-                                    project_id = sessionStorage.proyecto_id;
-                                    project_name = sessionStorage.proyecto_nombre;
-                                    project_prescriber = sessionStorage.proyecto_prescriptor;
-                                    argumentos = { id: project_id, nombre: project_name, prescriptor: project_prescriber };
-                                    ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
-                                    wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
-
-                                    obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
-                                });
-                        } // end if
-                    },
-                    error: function (textStatus, errorThrown)
-                    {
-                        console.log(textStatus + ' ' + errorThrown);
-                    }
-                });
-            } // end if
-        });
+        uploadPics(nombre_usuario, contrasenya);
     });
 
     // evento: clic en "Documental" ////////////////////////////////////////////
@@ -662,6 +577,7 @@ function mostrarEntradas(entradas, proyecto)
 /**
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * @name getPictureFromCamera
+ * @returns {undefined}
  */
 function getPictureFromCamera()
 {
@@ -697,6 +613,7 @@ function getPictureFromCamera()
 /**
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * @name getPictureFromLibrary
+ * @returns {undefined}
  */
 function getPictureFromLibrary()
 {
@@ -727,4 +644,76 @@ function getPictureFromLibrary()
     {
         alert('Hubo un problema al adquirir la imagen.');
     }
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name uploadPics
+ * @param {string} nombre_usuario
+ * @param {string} contraseña
+ * @returns {undefined}
+ */
+function uploadPics(nombre_usuario, contrasenya)
+{
+    var contenido = $('#ta-contenido').val();
+
+    console.log("Ok, going to upload " + camera.images.length);
+
+    var defs = [];
+
+    camera.images.forEach(function (i, index)
+    {
+        console.log('processing ' + i);
+        var def = $.Deferred();
+        var uri = encodeURI("http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_photo");
+
+        var options = new FileUploadOptions();
+        options.fileKey = "file";
+        options.fileName = i.substr(i.lastIndexOf('/') + 1);
+        options.mimeType = "image / jpeg";
+        options.params = {
+            index: index,
+            name: nombre_usuario,
+            password: contrasenya,
+            url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/'
+        };
+
+        var ft = new FileTransfer();
+        ft.upload(i, uri, win, fail, options);
+        defs.push(def.promise());
+
+        function win(r)
+        {
+            console.log("upload done");
+            console.log(r);
+            if ($.trim(r.response) === "0") {
+                console.log("this one failed");
+                def.resolve(0);
+            } else {
+                console.log("this one passed");
+                def.resolve(1);
+                response = JSON.parse(r.response);
+                 console.log('Respuesta:', response);
+                var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
+                 console.log('Ruta foto:', ruta_foto);
+
+                contenido = ruta_foto + contenido;
+            }
+        }
+
+        function fail(error)
+        {
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+            def.resolve(0);
+        }
+
+    });
+
+    $.when.apply($, defs).then(function ()
+    {
+        console.log("All images updated");
+        console.log(arguments);
+    });
+
 }
