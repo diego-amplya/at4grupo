@@ -782,6 +782,8 @@ function getPicturesFromLibrary()
 {
     console.log('@getPicturesFromLibrary');
 
+    $("#origen-imagen").popup("close");
+
     window.imagePicker.getPictures(
         function (results)
         {
