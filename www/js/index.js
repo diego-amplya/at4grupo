@@ -788,7 +788,7 @@ function getPicturesFromLibrary()
             for (var i = 0; i < results.length; i++) {
                 console.log('Image URI: ' + results[i]);
                 camera.images.push(results[i]);
-                fileName = imageData.substr(results[i].lastIndexOf("/") + 1, results[i].length);
+                fileName = results[i].substr(results[i].lastIndexOf("/") + 1, results[i].length);
                 var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + results[i] + '"></div>';
                 console.log(img);
                 $('#fotos').append(img);
