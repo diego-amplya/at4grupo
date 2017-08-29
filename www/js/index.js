@@ -709,7 +709,7 @@ function uploadPics(nombre_usuario, contrasenya)
     {
         console.log('processing ' + i);
         var def = $.Deferred();
-        var uri = encodeURI("http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_photo");
+        var uri = encodeURI("http://clientes.at4grupo.es/webservice/?function=wp_insert_photo");
 
         var options = new FileUploadOptions();
         options.fileKey = "file";
