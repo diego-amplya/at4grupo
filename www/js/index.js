@@ -608,8 +608,46 @@ function getPictureFromCamera()
 
 /**
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name getPicturesFromLibrary
+ * @returns {undefined}
+ * @description Selecciona múltiples imágenes de una sóla vez.
+ */
+function getPicturesFromLibrary()
+{
+    console.log('@getPicturesFromLibrary');
+
+    $("#origen-imagen").popup("close");
+
+    window.imagePicker.getPictures(
+        function (results)
+        {
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);
+                camera.images.push(results[i]);
+                fileName = results[i].substr(results[i].lastIndexOf("/") + 1, results[i].length);
+                var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + results[i] + '"></div>';
+                console.log(img);
+                $('#fotos').append(img);
+                console.log(camera.images);
+            }
+        }, function (error)
+        {
+            console.log('Error: ' + error);
+        }, {
+            maximumImagesCount: 20,
+            width: 1920,
+            height: 1920,
+            quality: 50
+        }
+    );
+
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * @name getPictureFromLibrary
  * @returns {undefined}
+ * @description Selecciona una sóla imagen. No se está usando actualmente.
  */
 function getPictureFromLibrary()
 {
@@ -776,35 +814,4 @@ function insertPost(nombre_usuario, contrasenya, contenido)
 
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
         });
-}
-
-function getPicturesFromLibrary()
-{
-    console.log('@getPicturesFromLibrary');
-
-    $("#origen-imagen").popup("close");
-
-    window.imagePicker.getPictures(
-        function (results)
-        {
-            for (var i = 0; i < results.length; i++) {
-                console.log('Image URI: ' + results[i]);
-                camera.images.push(results[i]);
-                fileName = results[i].substr(results[i].lastIndexOf("/") + 1, results[i].length);
-                var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + results[i] + '"></div>';
-                console.log(img);
-                $('#fotos').append(img);
-                console.log(camera.images);
-            }
-        }, function (error)
-        {
-            console.log('Error: ' + error);
-        }, {
-            maximumImagesCount: 20,
-            width: 1920,
-            height: 1920,
-            quality: 50
-        }
-    );
-
 }
