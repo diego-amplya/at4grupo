@@ -697,13 +697,13 @@ function uploadPics(nombre_usuario, contrasenya)
                 def.resolve(0);
             } else {
                 console.log("this one passed");
-                def.resolve(1);
                 response = JSON.parse(r.response);
                 console.log('Respuesta:', response);
                 var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
                 console.log('Ruta foto:', ruta_foto);
-
                 contenido = ruta_foto + contenido;
+                camera.images.length = 0;
+                def.resolve(1);
             }
         }
 
