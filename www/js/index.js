@@ -215,7 +215,7 @@ $(document).ready(function ()
     $('#origen-camara').on('click', getPictureFromCamera);
 
     // evento: clic en adquirir imagen desde la librería ///////////////////////
-    $('#origen-libreria').on('click', getPictureFromLibrary);
+    $('#origen-libreria').on('click', getPicturesFromLibrary);
 
     // evento: click en eliminar foto del formulario ///////////////////////////
     $('#fotos').on('click', '.foto button', function (e)
@@ -776,4 +776,33 @@ function insertPost(nombre_usuario, contrasenya, contenido)
 
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
         });
+}
+
+function getPicturesFromLibrary()
+{
+    console.log('@getPicturesFromLibrary');
+
+    window.imagePicker.getPictures(
+        function (results)
+        {
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);
+                camera.images.push(results[i]);
+                fileName = imageData.substr(results[i].lastIndexOf("/") + 1, results[i].length);
+                var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + results[i] + '"></div>';
+                console.log(img);
+                $('#fotos').append(img);
+                console.log(camera.images);
+            }
+        }, function (error)
+        {
+            console.log('Error: ' + error);
+        }, {
+            maximumImagesCount: 20,
+            width: 1920,
+            height: 1920,
+            quality: 50
+        }
+    );
+
 }
