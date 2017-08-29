@@ -725,7 +725,7 @@ function uploadPics(nombre_usuario, contrasenya)
  * @param {string} contenido
  * @returns {undefined}
  */
-function insertPost(nombre_usuario, contrasenya)
+function insertPost(nombre_usuario, contrasenya, contenido)
 {
     $.mobile.loading('show', {
         text: "Creando entrada...",
@@ -746,7 +746,7 @@ function insertPost(nombre_usuario, contrasenya)
     };
 
     options = JSON.stringify(options);
-    
+
     $.post(ws_url,
         {
             data: options
