@@ -224,7 +224,10 @@ $(document).ready(function ()
     });
 
     // evento: clic en Publicar ////////////////////////////////////////////////
-    $('.btn-publicar').on('click', uploadPics(nombre_usuario, contrasenya));
+    $('.btn-publicar').on('click', function (e)
+    {
+        uploadPics(nombre_usuario, contrasenya);
+    });
 
     // evento: clic en "Documental" ////////////////////////////////////////////
     $('#view-documents').on('click', function (e)
@@ -334,7 +337,7 @@ function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, arg
 function habilitarUsuario(registro)
 {
 
-    console.log('habilitarUsuario');
+    console.log('@habilitarUsuario');
     console.log(registro);
 
     if (registro.roles !== undefined) {
@@ -457,7 +460,7 @@ function mostrarCategoriasJefeObra(categorias, estado)
 function mostrarCategoriasCliente(categorias)
 {
 
-    console.log('mostrarCategoriasCliente');
+    console.log('@mostrarCategoriasCliente');
 
     window.location.assign("#categories-list-subscriber");
 
@@ -572,6 +575,8 @@ function mostrarEntradas(entradas, proyecto)
  */
 function getPictureFromCamera()
 {
+    console.log('@getPictureFromCamera');
+
     $("#origen-imagen").popup("close");
 
     navigator.camera.getPicture(onSuccess, onFail, {
@@ -608,8 +613,10 @@ function getPictureFromCamera()
  */
 function getPictureFromLibrary()
 {
+    console.log('@getPictureFromLibrary');
+
     $("#origen-imagen").popup("close");
-    
+
     navigator.camera.getPicture(onSuccess, onFail, {
         quality: 50,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
@@ -625,7 +632,7 @@ function getPictureFromLibrary()
     {
         camera.images.push(imageData);
         fileName = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
-         var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + imageData + '"></div>';
+        var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + imageData + '"></div>';
         console.log(img);
         $('#fotos').append(img);
         console.log(camera.images);
@@ -646,6 +653,8 @@ function getPictureFromLibrary()
  */
 function uploadPics(nombre_usuario, contrasenya)
 {
+    console.log('@uploadPics');
+
     $.mobile.loading('show', {
         text: "Subiendo imágenes...",
         textVisible: true,
@@ -690,9 +699,9 @@ function uploadPics(nombre_usuario, contrasenya)
                 console.log("this one passed");
                 def.resolve(1);
                 response = JSON.parse(r.response);
-                 console.log('Respuesta:', response);
+                console.log('Respuesta:', response);
                 var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
-                 console.log('Ruta foto:', ruta_foto);
+                console.log('Ruta foto:', ruta_foto);
 
                 contenido = ruta_foto + contenido;
             }
@@ -727,6 +736,8 @@ function uploadPics(nombre_usuario, contrasenya)
  */
 function insertPost(nombre_usuario, contrasenya, contenido)
 {
+    console.log('@insertPost');
+
     $.mobile.loading('show', {
         text: "Creando entrada...",
         textVisible: true,
