@@ -212,10 +212,13 @@ $(document).ready(function ()
     });
 
     // evento: clic en adquirir imagen desde la cámara /////////////////////////
-    $('#origen-camara').on('click', getPictureFromCamera);
+    // $('#origen-camara').on('click', getPictureFromCamera);
 
     // evento: clic en adquirir imagen desde la librería ///////////////////////
-    $('#origen-libreria').on('click', getPicturesFromLibrary);
+    // $('#origen-libreria').on('click', getPicturesFromLibrary);
+
+    // evento: clic en añadir imagen ///////////////////////////////////////////
+    $('#addPictures').on('click', getPicturesFromLibrary);
 
     // evento: click en eliminar foto del formulario ///////////////////////////
     $('#fotos').on('click', '.foto button', function (e)
@@ -572,6 +575,7 @@ function mostrarEntradas(entradas, proyecto)
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * @name getPictureFromCamera
  * @returns {undefined}
+ * @description No se está usando actualmente.
  */
 function getPictureFromCamera()
 {
