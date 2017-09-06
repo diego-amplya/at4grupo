@@ -1,5 +1,8 @@
-$(document).ready(function () { ////////////////////////////////////////////////
+var camera = {};
+camera.images = [];
 
+$(document).ready(function ()
+{
     autor = false;
     nombre_usuario = undefined;
     contraseña = undefined;
@@ -19,13 +22,15 @@ $(document).ready(function () { ////////////////////////////////////////////////
     }
 
     // evento: clic en Iniciar sesión //////////////////////////////////////////
-    $('#login-btn').click(function (e) {
+    $('#login-btn').click(function (e)
+    {
 
         $.mobile.loading('show', {
             text: "Accediendo...",
             textVisible: true,
             theme: "a"
         });
+
         // Se recogen los datos del formulario
         nombre_usuario = $("#email").val();
         console.log(nombre_usuario);
@@ -48,28 +53,36 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en un filtro del jefe de obra //////////////////////////////
-    $('.btn-filter').on('click', function () {
+    $('.btn-filter').on('click', function ()
+    {
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
 
         var estado = $(this).data('filtro');
         // se llama a la función que recupera las categorías
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
-        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
+        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?per_page=100&amp;order=desc';
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategoriasJefeObra, estado);
     });
 
     // evento: clic en proyecto ////////////////////////////////////////////////
-    $('.lista-proyectos').on('click', 'li a', function (e) {
+    $('.lista-proyectos').on('click', 'li', function (e)
+    {
 
         $.mobile.loading('show', {
             text: "Cargando...",
             textVisible: true,
             theme: "a"
         });
+
         // se recuperan las entradas del proyecto clicado
         project_id = $(this).data('proyecto-id');
         project_name = $(this).data('proyecto-nombre');
         project_prescriber = $(this).data('proyecto-prescriptor');
-        argumentos = {id: project_id, nombre: project_name, prescriptor: project_prescriber};
+        argumentos = { id: project_id, nombre: project_name, prescriptor: project_prescriber };
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
         obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
@@ -80,7 +93,14 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en volver desde la lista de entradas ///////////////////////
-    $('#back-from-posts-list').on('click', function () {
+    $('#back-from-posts-list').on('click', function ()
+    {
+        $.mobile.loading('show', {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "a"
+        });
+
         if (autor === true) {
             window.location.assign("#categories-list-author");
         } else {
@@ -89,15 +109,64 @@ $(document).ready(function () { ////////////////////////////////////////////////
     });
 
     // evento: clic en crear entrada ///////////////////////////////////////////
-    $('.btn-crear-entrada').on('click', function (e) {
+    $('.btn-crear-entrada').on('click', function (e)
+    {
         // se resetea el formulario
         $('#titulo').val('');
+        $('#fotos').html('');
         $('.jqte_editor').html(''); // equivalente al textarea #ta-contenido
-        $('#fotos').html('<div class="foto"><button class="eliminar"></button><input type="file" name="imagen"><img src="" style="display:none; width: 100%" /></div>');
+    });
+
+    // evento: clic para editar una entrada (sólo el título) ///////////////////
+    $('#lista-entradas').on('click', 'li > a.editar', function (e)
+    {
+        $('#editar-titulo input').val($(this).data('entrada-titulo'));
+        $('#editar-titulo button').data('entrada-id', $(this).data('entrada-id'));
+    });
+
+    // evento: clic para guardar la modificación del título ////////////////////
+    $('#editar-titulo button').on('click', function (e)
+    {
+        $.mobile.loading('show', {
+            text: "Guardando...",
+            textVisible: true,
+            theme: "a"
+        });
+
+        var id = $(this).data('entrada-id');
+        var nuevo_titulo = $('#editar-titulo input').val();
+
+        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_update_post';
+        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/' + id;
+        $.post(ws_url,
+            {
+                data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '", "title":"' + nuevo_titulo + '"}'
+            },
+            function (response, txtStatus, xhr)
+            {
+                console.log('Response: ', response);
+
+                $.mobile.loading('show', {
+                    text: "Cargando...",
+                    textVisible: true,
+                    theme: "a"
+                });
+
+                // se refresca la lista de entradas
+                project_id = sessionStorage.proyecto_id;
+                project_name = sessionStorage.proyecto_nombre;
+                project_prescriber = sessionStorage.proyecto_prescriptor;
+                argumentos = { id: project_id, nombre: project_name, prescriptor: project_prescriber };
+                ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+                wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+
+                obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+            });
     });
 
     // evento: clic para eliminar entrada //////////////////////////////////////
-    $('#lista-entradas').on('click', 'li > .eliminar', function (e) {
+    $('#lista-entradas').on('click', 'li > .eliminar', function (e)
+    {
 
         id = $(this).data('entrada-id');
         //alert(id);
@@ -106,151 +175,114 @@ $(document).ready(function () { ////////////////////////////////////////////////
             ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_delete_post';
             wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/' + id;
             $.post(ws_url,
-                    {
-                        data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
-                    },
-                    function (response, txtStatus, xhr) {
-                        console.log('Response: ', response);
+                {
+                    data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
+                },
+                function (response, txtStatus, xhr)
+                {
+                    console.log('Response: ', response);
 
-                        $.mobile.loading('show', {
-                            text: "Cargando...",
-                            textVisible: true,
-                            theme: "a"
-                        });
-                        // se refresca la lista de entradas
-                        project_id = sessionStorage.proyecto_id;
-                        project_name = sessionStorage.proyecto_nombre;
-                        project_prescriber = sessionStorage.proyecto_prescriptor;
-                        argumentos = {id: project_id, nombre: project_name, prescriptor: project_prescriber};
-                        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
-                        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
-
-                        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+                    $.mobile.loading('show', {
+                        text: "Cargando...",
+                        textVisible: true,
+                        theme: "a"
                     });
+
+                    // se refresca la lista de entradas
+                    project_id = sessionStorage.proyecto_id;
+                    project_name = sessionStorage.proyecto_nombre;
+                    project_prescriber = sessionStorage.proyecto_prescriptor;
+                    argumentos = { id: project_id, nombre: project_name, prescriptor: project_prescriber };
+                    ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+                    wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+
+                    obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+                });
         }
     });
 
     // evento: clic en salir de edición ////////////////////////////////////////
-    $('#confirmar-volver .si').on('click', function () {
-
+    $('#confirmar-volver .si').on('click', function ()
+    {
         window.location.assign("#posts-list");
     });
-    $('#confirmar-volver .no').on('click', function () {
-
+    $('#confirmar-volver .no').on('click', function ()
+    {
         $("#confirmar-volver").popup("close");
     });
 
-    // evento: cambio en un selector de archivo ////////////////////////////////
-    $('#fotos').on('change', '.foto input', function (e) {
+    // evento: clic en adquirir imagen desde la cámara /////////////////////////
+    // $('#origen-camara').on('click', getPictureFromCamera);
 
-        var tmppath = URL.createObjectURL(e.target.files[0]);
-        $(this).parents('.foto').children('img').fadeIn('fast').attr('src', tmppath);
-        $(this).parents('.foto').children('.eliminar').fadeIn('fast');
-        $(this).parents('.foto').children('input').css('display', 'none');
-        $(this).parents('.foto').children('div').css('display', 'none'); // esta
-        // línea es necesaria porque la primera vez que se inserta el html jQuery
-        // mobile envuelve el input en un div
-        $('#fotos').append('<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="file"></div><img src="" style="display:none; width: 100%" /></div>');
-    });
+    // evento: clic en adquirir imagen desde la librería ///////////////////////
+    // $('#origen-libreria').on('click', getPicturesFromLibrary);
+
+    // evento: clic en añadir imagen ///////////////////////////////////////////
+    $('#addPictures').on('click', getPicturesFromLibrary);
 
     // evento: click en eliminar foto del formulario ///////////////////////////
-    $('#fotos').on('click', '.foto button', function (e) {
+    $('#fotos').on('click', '.foto button', function (e)
+    {
         $(this).parent().remove();
     });
 
     // evento: clic en Publicar ////////////////////////////////////////////////
-    $('.btn-publicar').on('click', function () {
+    $('.btn-publicar').on('click', function (e)
+    {
+        uploadPics(nombre_usuario, contrasenya);
+    });
 
+    // evento: clic en "Documental" ////////////////////////////////////////////
+    $('#view-documents').on('click', function (e)
+    {
         $.mobile.loading('show', {
-            text: "Enviando...",
+            text: "Cargando...",
             textVisible: true,
             theme: "a"
         });
 
-        var contenido = $('#ta-contenido').val();
+        $.post('http://clientes.at4grupo.es/webservice/?function=get_documents_list',
+            {
+                data: '{"id":"' + sessionStorage.proyecto_id + '"}'
+            },
+            function (data, txtStatus, xhr)
+            {
 
-        var fotos = $('.foto input');
-        console.log('Fotos:', fotos);
+                console.log('Docs: ', data, typeof data);
 
-        var i = 0;
+                if (data === 'false' || data === '[".",".."]') {
 
-        $.each(fotos, function (index, foto) {
+                    $.mobile.loading('hide');
+                    $("#sin-resultados").popup('open');
+                    setTimeout(function () { $("#sin-resultados").popup("close"); }, 3000);
 
-            var foto_data = $(foto).prop('files')[0];
-            //console.log('Foto:', foto_data);
+                } else {
 
-            if (foto_data !== undefined) {
+                    var docs = JSON.parse(data);
+                    docs.splice(0, 2);
+                    console.log('Data: ', docs);
 
-                var formData = new FormData();
-                formData.append('name', nombre_usuario);
-                formData.append('password', contrasenya);
-                formData.append('url', 'http://clientes.at4grupo.es/wp-json/wp/v2/media/');
-                formData.append('photo', foto_data);
-                // Display the key/value pairs
-                //for (var pair of formData.entries()) {
-                //    console.log(pair[0] + ', ' + pair[1]);
-                //}
+                    var html = '';
 
-                $.ajax({
-                    async: true,
-                    crossDomain: true,
-                    url: "http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_photo",
-                    method: "POST",
-                    processData: false,
-                    contentType: false,
-                    mimeType: "multipart/form-data",
-                    data: formData,
-                    success: function (response, txtStatus, xhr) {
-                        response = JSON.parse(response);
-                        // console.log('Respuesta:', response);
-                        var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
-                        // console.log('Ruta foto:', ruta_foto);
+                    $.each(docs, function (index, value)
+                    {
 
-                        contenido = ruta_foto + contenido;
+                        html += '<li><a href="http://clientes.at4grupo.es/wp-content/uploads/0_PROYECTOS/' + sessionStorage.proyecto_id + '/' + value + '">' + value + '</a></li>';
+                    });
 
-                        i++;
+                    $('#lista-documentos').html(html);
 
-                        if (i === (fotos.length - 1)) {
-
-                            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_post';
-
-                            var options = {
-                                name: nombre_usuario,
-                                password: contrasenya,
-                                url: 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/',
-                                status: 'publish',
-                                categories: sessionStorage.proyecto_id,
-                                title: $('#titulo').val(),
-                                content: contenido
-                            };
-                            options = JSON.stringify(options);
-                            $.post(ws_url,
-                                    {
-                                        data: options
-                                    },
-                                    function (response, txtStatus, xhr) {
-                                        console.log('Response: ', response);
-
-                                        // se refresca la lista de entradas
-                                        project_id = sessionStorage.proyecto_id;
-                                        project_name = sessionStorage.proyecto_nombre;
-                                        project_prescriber = sessionStorage.proyecto_prescriptor;
-                                        argumentos = {id: project_id, nombre: project_name, prescriptor: project_prescriber};
-                                        ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
-                                        wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
-
-                                        obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
-                                    });
-                        } // end if
-                    },
-                    error: function (textStatus, errorThrown) {
-
-                        console.log(textStatus + ' ' + errorThrown);
-                    }
-                });
-            } // end if
-        });
+                    window.location.assign('#documents');
+                }
+            });
     });
+
+    // evento: click en Cerrar sesión //////////////////////////////////////////
+    $('.exit').on('click', function (e)
+    {
+        location.assign('#login');
+    });
+
 }); // Fin document ready //////////////////////////////////////////////////////
 
 /**
@@ -258,7 +290,8 @@ $(document).ready(function () { ////////////////////////////////////////////////
  * @name onDeviceReady
  * @returns {undefined}
  */
-function onDeviceReady() {
+function onDeviceReady()
+{
 
     console.log("El dispositivo está listo");
 }
@@ -274,37 +307,40 @@ function onDeviceReady() {
  * @param {any} argumentos
  * @returns {undefined}
  */
-function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, argumentos) {
+function obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, callback, argumentos)
+{
 
     console.log('@obtenerDatos');
     $.post(ws_url,
-            {
-                data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
-            },
-            function (data, txtStatus, xhr) {
+        {
+            data: '{"name":"' + nombre_usuario + '", "password":"' + contrasenya + '", "url":"' + wp_url + '"}'
+        },
+        function (data, txtStatus, xhr)
+        {
 
-                data = JSON.parse(data);
-                console.log('Data: ', data);
+            data = JSON.parse(data);
+            console.log('Data: ', data);
 
-                // se llama a la función pasada como callback
-                if (argumentos === undefined) {
-                    // sin argumentos
-                    callback(data);
-                } else {
-                    // con argumentos
-                    callback(data, argumentos);
-                }
-            });
+            // se llama a la función pasada como callback
+            if (argumentos === undefined) {
+                // sin argumentos
+                callback(data);
+            } else {
+                // con argumentos
+                callback(data, argumentos);
+            }
+        });
 }
 
 /**
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * @name habilitarAutor
+ * @name habilitarUsuario
  * @param {object} registro 
  */
-function habilitarUsuario(registro) {
+function habilitarUsuario(registro)
+{
 
-    console.log('habilitarUsuario');
+    console.log('@habilitarUsuario');
     console.log(registro);
 
     if (registro.roles !== undefined) {
@@ -323,7 +359,7 @@ function habilitarUsuario(registro) {
 
             // se llama a la función que recupera las categorías
             ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
-            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?order=desc';
+            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/categories?per_page=100&amp;order=desc';
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarCategoriasCliente);
 
         }
@@ -342,9 +378,11 @@ function habilitarUsuario(registro) {
  * @param {array} categorias 
  * @param {string} estado 
  */
-function mostrarCategoriasJefeObra(categorias, estado) {
+function mostrarCategoriasJefeObra(categorias, estado)
+{
 
     console.log('@mostrarCategoriasJefeObra');
+    console.log(categorias);
 
     window.location.assign("#categories-list-author");
 
@@ -352,7 +390,8 @@ function mostrarCategoriasJefeObra(categorias, estado) {
     var en_ejecucion = new String();
     var finalizados = new String();
 
-    $.each(categorias, function (indice, proyecto) {
+    $.each(categorias, function (indice, proyecto)
+    {
         // console.log(proyecto);
         // console.log(proyecto.slug);
 
@@ -364,37 +403,37 @@ function mostrarCategoriasJefeObra(categorias, estado) {
 
         switch (proyecto_estado) {
             case 'enespera':
-                en_espera += '<li class="enespera">' +
-                        '<div class="imagen-proyecto">' +
-                        '<img src="' + proyecto_imagen + '">' +
-                        '</div>' +
-                        '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
-                        '<span>' + proyecto.date + '</span>' +
-                        '</div>' +
-                        '</li>';
+                en_espera += '<li class="enespera" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
+                    '<div class="imagen-proyecto">' +
+                    '<img src="' + proyecto_imagen + '">' +
+                    '</div>' +
+                    '<div class="entradas-proyecto">' +
+                    '<a href="#">' + proyecto.name + '</a>' +
+                    '<span>' + proyecto.date + '</span>' +
+                    '</div>' +
+                    '</li>';
                 break;
             case 'enejecucion':
-                en_ejecucion += '<li class="enejecucion">' +
-                        '<div class="imagen-proyecto">' +
-                        '<img src="' + proyecto_imagen + '">' +
-                        '</div>' +
-                        '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
-                        '<span>' + proyecto.date + '</span>' +
-                        '</div>' +
-                        '</li>';
+                en_ejecucion += '<li class="enejecucion" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
+                    '<div class="imagen-proyecto">' +
+                    '<img src="' + proyecto_imagen + '">' +
+                    '</div>' +
+                    '<div class="entradas-proyecto">' +
+                    '<a href="#">' + proyecto.name + '</a>' +
+                    '<span>' + proyecto.date + '</span>' +
+                    '</div>' +
+                    '</li>';
                 break;
-            default:
-                finalizados += '<li class="finalizados">' +
-                        '<div class="imagen-proyecto">' +
-                        '<img src="' + proyecto_imagen + '">' +
-                        '</div>' +
-                        '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
-                        '<span>' + proyecto.date + '</span>' +
-                        '</div>' +
-                        '</li>';
+            case 'finalizado':
+                finalizados += '<li class="finalizados" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
+                    '<div class="imagen-proyecto">' +
+                    '<img src="' + proyecto_imagen + '">' +
+                    '</div>' +
+                    '<div class="entradas-proyecto">' +
+                    '<a href="#">' + proyecto.name + '</a>' +
+                    '<span>' + proyecto.date + '</span>' +
+                    '</div>' +
+                    '</li>';
         }
     });
     $('#lista-proyectos-jefeobra').html('');
@@ -421,9 +460,10 @@ function mostrarCategoriasJefeObra(categorias, estado) {
  * @name mostrarCategoriasCliente
  * @param {array} categorias 
  */
-function mostrarCategoriasCliente(categorias) {
+function mostrarCategoriasCliente(categorias)
+{
 
-    console.log('mostrarCategoriasCliente');
+    console.log('@mostrarCategoriasCliente');
 
     window.location.assign("#categories-list-subscriber");
 
@@ -431,7 +471,8 @@ function mostrarCategoriasCliente(categorias) {
     var en_ejecucion = new String();
     var finalizados = new String();
 
-    $.each(categorias, function (indice, proyecto) {
+    $.each(categorias, function (indice, proyecto)
+    {
         // console.log(proyecto);
         // console.log(proyecto.slug);
 
@@ -443,37 +484,37 @@ function mostrarCategoriasCliente(categorias) {
 
         switch (proyecto_estado) {
             case 'enespera':
-                en_espera += '<li>' +
-                        '<div class="imagen-proyecto">' +
-                        '<img src="' + proyecto_imagen + '">' +
-                        '</div>' +
-                        '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
-                        '<span>' + proyecto.date + '</span>' +
-                        '</div>' +
-                        '</li>';
+                en_espera += '<li data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
+                    '<div class="imagen-proyecto">' +
+                    '<img src="' + proyecto_imagen + '">' +
+                    '</div>' +
+                    '<div class="entradas-proyecto">' +
+                    '<a href="#">' + proyecto.name + '</a>' +
+                    '<span>' + proyecto.date + '</span>' +
+                    '</div>' +
+                    '</li>';
                 break;
             case 'enejecucion':
-                en_ejecucion += '<li>' +
-                        '<div class="imagen-proyecto">' +
-                        '<img src="' + proyecto_imagen + '">' +
-                        '</div>' +
-                        '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
-                        '<span>' + proyecto.date + '</span>' +
-                        '</div>' +
-                        '</li>';
+                en_ejecucion += '<li data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
+                    '<div class="imagen-proyecto">' +
+                    '<img src="' + proyecto_imagen + '">' +
+                    '</div>' +
+                    '<div class="entradas-proyecto">' +
+                    '<a href="#">' + proyecto.name + '</a>' +
+                    '<span>' + proyecto.date + '</span>' +
+                    '</div>' +
+                    '</li>';
                 break;
             default:
-                finalizados += '<li>' +
-                        '<div class="imagen-proyecto">' +
-                        '<img src="' + proyecto_imagen + '">' +
-                        '</div>' +
-                        '<div class="entradas-proyecto">' +
-                        '<a href="#" data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' + proyecto.name + '</a>' +
-                        '<span>' + proyecto.date + '</span>' +
-                        '</div>' +
-                        '</li>';
+                finalizados += '<li data-proyecto-id="' + proyecto.id + '" data-proyecto-nombre="' + proyecto.name + '" data-proyecto-prescriptor="' + proyecto_prescriptor + '">' +
+                    '<div class="imagen-proyecto">' +
+                    '<img src="' + proyecto_imagen + '">' +
+                    '</div>' +
+                    '<div class="entradas-proyecto">' +
+                    '<a href="#">' + proyecto.name + '</a>' +
+                    '<span>' + proyecto.date + '</span>' +
+                    '</div>' +
+                    '</li>';
         }
     });
     $('#lista-proyectos-cliente').html('');
@@ -487,7 +528,8 @@ function mostrarCategoriasCliente(categorias) {
  * @param {type} proyecto
  * @returns {undefined}
  */
-function mostrarEntradas(entradas, proyecto) {
+function mostrarEntradas(entradas, proyecto)
+{
 
     console.log('@mostrarEntradas');
     // console.log(proyecto);
@@ -499,29 +541,281 @@ function mostrarEntradas(entradas, proyecto) {
     sessionStorage.proyecto_prescriptor = proyecto.prescriptor;
     $('.titulo-proyecto').html(proyecto.nombre);
     $('.prescriptor').html(proyecto.prescriptor);
-    $.each(entradas, function (indice, entrada) {
+    $.each(entradas, function (indice, entrada)
+    {
         // console.log(entrada);
 
         var html = '';
         html += '<li>' +
-                '<button class="eliminar ui-btn ui-shadow ui-corner-all" data-entrada-id="' + entrada.id + '"></button>' +
-                '<a href="#" data-proyecto-nombre="' + proyecto.nombre + '">' +
-                entrada.title.rendered +
-                '<br>' +
-                '<span>' + entrada.modified.substr(0, 10).split('-').reverse().join('-') + '</span>' +
-                '<br>' +
-                '<br>' +
-                '<div class="cuerpo-entrada">' + entrada.content.rendered + '</div>' +
-                '</a>' +
-                '</li>';
+            '<a href="#editar-titulo" data-rel="popup" data-transition="pop" class="editar ui-btn ui-shadow ui-corner-all" data-entrada-id="' + entrada.id + '" data-entrada-titulo="' + entrada.title.rendered + '"></a>' +
+            '<a class="eliminar ui-btn ui-shadow ui-corner-all" data-entrada-id="' + entrada.id + '"></a>' +
+            '<a href="#" data-proyecto-nombre="' + proyecto.nombre + '">' +
+            entrada.title.rendered +
+            '<br>' +
+            '<span>' + entrada.date.substr(0, 10).split('-').reverse().join('-') + '</span>' +
+            '<br>' +
+            '<br>' +
+            '<div class="cuerpo-entrada">' + entrada.content.rendered + '</div>' +
+            '</a>' +
+            '</li>';
         $('#lista-entradas').append(html);
         $('.cuerpo-entrada img').attr('height', '');
     });
 
-    // para el jefe de obra se muestra el botón de eliminar la entrada
+    // para el jefe de obra se muestra el botón de editar/eliminar la entrada
     if (autor === true) {
+        $('#lista-entradas > li > .editar').css('display', 'block');
         $('#lista-entradas > li > .eliminar').css('display', 'block');
     }
 
     $.mobile.loading("hide");
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name getPictureFromCamera
+ * @returns {undefined}
+ * @description No se está usando actualmente.
+ */
+function getPictureFromCamera()
+{
+    console.log('@getPictureFromCamera');
+
+    $("#origen-imagen").popup("close");
+
+    navigator.camera.getPicture(onSuccess, onFail, {
+        quality: 50,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        destinationType: Camera.DestinationType.FILE_URI,
+        encodingType: Camera.EncodingType.JPEG,
+        //allowEdit: true,
+        correctOrientation: true,
+        targetWidth: 1920,
+        targetHeight: 1920
+    });
+
+    function onSuccess(imageData)
+    {
+        camera.images.push(imageData);
+        fileName = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
+        var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + imageData + '"></div>';
+        console.log(img);
+        $('#fotos').append(img);
+        console.log(camera.images);
+    }
+
+    function onFail(message)
+    {
+        alert('Hubo un problema al adquirir la imagen.');
+    }
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name getPicturesFromLibrary
+ * @returns {undefined}
+ * @description Selecciona múltiples imágenes de una sóla vez.
+ */
+function getPicturesFromLibrary()
+{
+    console.log('@getPicturesFromLibrary');
+
+    $("#origen-imagen").popup("close");
+
+    window.imagePicker.getPictures(
+        function (results)
+        {
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);
+                camera.images.push(results[i]);
+                fileName = results[i].substr(results[i].lastIndexOf("/") + 1, results[i].length);
+                var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + results[i] + '"></div>';
+                console.log(img);
+                $('#fotos').append(img);
+                console.log(camera.images);
+            }
+        }, function (error)
+        {
+            console.log('Error: ' + error);
+        }, {
+            maximumImagesCount: 20,
+            width: 1920,
+            height: 1920,
+            quality: 50
+        }
+    );
+
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name getPictureFromLibrary
+ * @returns {undefined}
+ * @description Selecciona una sóla imagen. No se está usando actualmente.
+ */
+function getPictureFromLibrary()
+{
+    console.log('@getPictureFromLibrary');
+
+    $("#origen-imagen").popup("close");
+
+    navigator.camera.getPicture(onSuccess, onFail, {
+        quality: 50,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        destinationType: Camera.DestinationType.FILE_URI,
+        encodingType: Camera.EncodingType.JPEG,
+        //allowEdit: true,
+        correctOrientation: true,
+        targetWidth: 1920,
+        targetHeight: 1920
+    });
+
+    function onSuccess(imageData)
+    {
+        camera.images.push(imageData);
+        fileName = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
+        var img = '<div class="foto"><button class="eliminar ui-btn ui-corner-all"></button><img src="' + imageData + '"></div>';
+        console.log(img);
+        $('#fotos').append(img);
+        console.log(camera.images);
+    }
+
+    function onFail(message)
+    {
+        alert('Hubo un problema al adquirir la imagen.');
+    }
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name uploadPics
+ * @param {string} nombre_usuario
+ * @param {string} contraseña
+ * @returns {undefined}
+ */
+function uploadPics(nombre_usuario, contrasenya)
+{
+    console.log('@uploadPics');
+
+    $.mobile.loading('show', {
+        text: "Subiendo imágenes...",
+        textVisible: true,
+        theme: "a"
+    });
+
+    var contenido = $('#ta-contenido').val();
+
+    console.log("Ok, going to upload " + camera.images.length);
+
+    var defs = [];
+
+    camera.images.forEach(function (i, index)
+    {
+        console.log('processing ' + i);
+        var def = $.Deferred();
+        var uri = encodeURI("http://clientes.at4grupo.es/webservice/?function=wp_insert_photo");
+
+        var options = new FileUploadOptions();
+        options.fileKey = "file";
+        options.fileName = i.substr(i.lastIndexOf('/') + 1);
+        options.mimeType = "image / jpeg";
+        options.params = {
+            index: index,
+            name: nombre_usuario,
+            password: contrasenya,
+            url: 'http://clientes.at4grupo.es/wp-json/wp/v2/media/'
+        };
+
+        var ft = new FileTransfer();
+        ft.upload(i, uri, win, fail, options);
+        defs.push(def.promise());
+
+        function win(r)
+        {
+            console.log("upload done");
+            console.log(r);
+            if ($.trim(r.response) === "0") {
+                console.log("this one failed");
+                def.resolve(0);
+            } else {
+                console.log("this one passed");
+                response = JSON.parse(r.response);
+                console.log('Respuesta:', response);
+                var ruta_foto = '<img src="' + response.source_url + '"  alt=""  class="alignnone size-full"><br><br>';
+                console.log('Ruta foto:', ruta_foto);
+                contenido = ruta_foto + contenido;
+                camera.images.length = 0;
+                def.resolve(1);
+            }
+        }
+
+        function fail(error)
+        {
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+            def.resolve(0);
+        }
+
+    });
+
+    $.when.apply($, defs).then(function ()
+    {
+        console.log("All images updated");
+        console.log(arguments);
+        $.mobile.loading('hide');
+        insertPost(nombre_usuario, contrasenya, contenido);
+    });
+
+}
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * @name insertPost
+ * @param {string} nombre_usuario
+ * @param {string} contraseña
+ * @param {string} contenido
+ * @returns {undefined}
+ */
+function insertPost(nombre_usuario, contrasenya, contenido)
+{
+    console.log('@insertPost');
+
+    $.mobile.loading('show', {
+        text: "Creando entrada...",
+        textVisible: true,
+        theme: "a"
+    });
+
+    ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_insert_post';
+
+    var options = {
+        name: nombre_usuario,
+        password: contrasenya,
+        url: 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/',
+        status: 'publish',
+        categories: sessionStorage.proyecto_id,
+        title: $('#titulo').val(),
+        content: contenido
+    };
+
+    options = JSON.stringify(options);
+
+    $.post(ws_url,
+        {
+            data: options
+        },
+        function (response, txtStatus, xhr)
+        {
+            console.log('Response: ', response);
+
+            // se refresca la lista de entradas
+            project_id = sessionStorage.proyecto_id;
+            project_name = sessionStorage.proyecto_nombre;
+            project_prescriber = sessionStorage.proyecto_prescriptor;
+            argumentos = { id: project_id, nombre: project_name, prescriptor: project_prescriber };
+            ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
+            wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/posts/?per_page=100&categories=' + project_id;
+
+            obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
+        });
 }
