@@ -292,8 +292,8 @@ $(document).ready(function ()
  */
 function onDeviceReady()
 {
-
     console.log("El dispositivo está listo");
+    setupPush();
 }
 
 /**
@@ -819,3 +819,44 @@ function insertPost(nombre_usuario, contrasenya, contenido)
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
         });
 }
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ */
+function setupPush() {
+   var push = PushNotification.init({
+       "android": {
+           "senderID": "832254421924"
+       },
+       "ios": {
+         "sound": true,
+         "alert": true,
+         "badge": true
+       },
+       "windows": {}
+   });
+
+   push.on('registration', function(data) {
+       console.log("registration event: " + data.registrationId);
+       var oldRegId = localStorage.getItem('registrationId');
+       if (oldRegId !== data.registrationId) {
+           // Save new registration ID
+           localStorage.setItem('registrationId', data.registrationId);
+           // Post registrationId to your app server as the value has changed
+       }
+   });
+
+   push.on('error', function(e) {
+       console.log("push error = " + e.message);
+   });
+
+   push.on('notification', function(data) {
+         console.log('notification event');
+         navigator.notification.alert(
+             data.message,         // message
+             null,                 // callback
+             data.title,           // title
+             'Ok'                  // buttonName
+         );
+     });
+ }
