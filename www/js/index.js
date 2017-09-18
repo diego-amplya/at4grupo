@@ -826,7 +826,7 @@ function insertPost(nombre_usuario, contrasenya, contenido)
 function setupPush() {
    var push = PushNotification.init({
        "android": {
-           "senderID": "832254421924"
+           "senderID": "406041629151"
        },
        "ios": {
          "sound": true,
