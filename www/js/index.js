@@ -45,6 +45,9 @@ $(document).ready(function ()
             window.localStorage.clear();
         }
 
+        //Pruebas notificación. Comprobaciones
+        setupPush();
+
         // comprobar el usuario
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/users/me?context=edit';
@@ -293,7 +296,8 @@ $(document).ready(function ()
 function onDeviceReady()
 {
     console.log("El dispositivo está listo");
-    setupPush();
+    //Esta llamada se realiza en el evento del botón 'login'
+    //setupPush();
 }
 
 /**
@@ -844,6 +848,28 @@ function setupPush() {
            localStorage.setItem('registrationId', data.registrationId);
            // Post registrationId to your app server as the value has changed
        }
+
+       $.ajax({
+                async: true,
+                crossDomain: true,
+                //url: "http://clientes.at4grupo.es/webservice/firebase/?funcion=escribir_log",
+                url: "http://clientes.at4grupo.es/webservice/firebase/escritura/?funcion=gestion_usuarios_firebase",
+                method: "POST",
+                data: {
+                regId: data.registrationId,
+                nombreUsuario: localStorage.uname
+
+                },
+                success: function (response, txtStatus, xhr) {
+
+                //console.log('Respuesta:', JSON.parse(response));
+
+                },
+                error: function (textStatus, errorThrown) {
+
+                console.log(textStatus + ' ' + errorThrown);
+                }
+        });
    });
 
    push.on('error', function(e) {
