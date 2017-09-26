@@ -46,7 +46,7 @@ $(document).ready(function ()
         }
 
         //Pruebas notificación. Comprobaciones
-        setupPush();
+        //setupPush();
 
         // comprobar el usuario
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
@@ -349,6 +349,9 @@ function habilitarUsuario(registro)
 
     if (registro.roles !== undefined) {
 
+        //Pruebas
+        setupPush();
+
         if (registro.roles[0] === 'author') {
 
             autor = true;
@@ -360,6 +363,7 @@ function habilitarUsuario(registro)
         } else if (registro.roles[0] === 'subscriber') {
 
             $('#login-error').css('display', 'none');
+            
 
             // se llama a la función que recupera las categorías
             ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
