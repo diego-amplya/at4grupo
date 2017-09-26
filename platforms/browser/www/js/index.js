@@ -45,6 +45,9 @@ $(document).ready(function ()
             window.localStorage.clear();
         }
 
+        //Pruebas notificación. Comprobaciones
+        //setupPush();
+
         // comprobar el usuario
         ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get';
         wp_url = 'http://clientes.at4grupo.es/wp-json/wp/v2/users/me?context=edit';
@@ -292,8 +295,9 @@ $(document).ready(function ()
  */
 function onDeviceReady()
 {
-
     console.log("El dispositivo está listo");
+    //Esta llamada se realiza en el evento del botón 'login'
+    //setupPush();
 }
 
 /**
@@ -345,6 +349,9 @@ function habilitarUsuario(registro)
 
     if (registro.roles !== undefined) {
 
+        //Pruebas
+        setupPush();
+
         if (registro.roles[0] === 'author') {
 
             autor = true;
@@ -356,6 +363,7 @@ function habilitarUsuario(registro)
         } else if (registro.roles[0] === 'subscriber') {
 
             $('#login-error').css('display', 'none');
+            
 
             // se llama a la función que recupera las categorías
             ws_url = 'http://clientes.at4grupo.es/webservice/?function=wp_fx_get_projects_with_date';
@@ -819,3 +827,66 @@ function insertPost(nombre_usuario, contrasenya, contenido)
             obtenerDatos(nombre_usuario, contrasenya, ws_url, wp_url, mostrarEntradas, argumentos);
         });
 }
+
+/**
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ */
+function setupPush() {
+   var push = PushNotification.init({
+       "android": {
+           "senderID": "406041629151"
+       },
+       "ios": {
+         "sound": true,
+         "alert": true,
+         "badge": true
+       },
+       "windows": {}
+   });
+
+   push.on('registration', function(data) {
+       console.log("registration event: " + data.registrationId);
+       var oldRegId = localStorage.getItem('registrationId');
+       if (oldRegId !== data.registrationId) {
+           // Save new registration ID
+           localStorage.setItem('registrationId', data.registrationId);
+           // Post registrationId to your app server as the value has changed
+       }
+
+       $.ajax({
+                async: true,
+                crossDomain: true,
+                //url: "http://clientes.at4grupo.es/webservice/firebase/?funcion=escribir_log",
+                url: "http://clientes.at4grupo.es/webservice/firebase/escritura/?funcion=gestion_usuarios_firebase",
+                method: "POST",
+                data: {
+                regId: data.registrationId,
+                nombreUsuario: localStorage.uname
+
+                },
+                success: function (response, txtStatus, xhr) {
+
+                //console.log('Respuesta:', JSON.parse(response));
+
+                },
+                error: function (textStatus, errorThrown) {
+
+                console.log(textStatus + ' ' + errorThrown);
+                }
+        });
+   });
+
+   push.on('error', function(e) {
+       console.log("push error = " + e.message);
+   });
+
+   push.on('notification', function(data) {
+         console.log('notification event');
+         navigator.notification.alert(
+             data.message,         // message
+             null,                 // callback
+             data.title,           // title
+             'Ok'                  // buttonName
+         );
+     });
+ }

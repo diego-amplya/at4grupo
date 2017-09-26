@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "406041629151",
+    "firebase_url": "https://ejemplopushnotif.firebaseio.com",
+    "project_id": "ejemplopushnotif",
+    "storage_bucket": "ejemplopushnotif.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406041629151:android:f8a25edcae4efb91",
+        "android_client_info": {
+          "package_name": "com.phonegap.at4clientes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406041629151-k6utn8tgk7d9dclmoq4fu7v806greq0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiBbGVE3x-eGqEjpc0ifYgKqi9SD244tM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406041629151:android:2b6065e31659e7f6",
+        "android_client_info": {
+          "package_name": "com.phonegap.helloworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406041629151-k6utn8tgk7d9dclmoq4fu7v806greq0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiBbGVE3x-eGqEjpc0ifYgKqi9SD244tM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406041629151:android:0d378f7024e9bb66",
+        "android_client_info": {
+          "package_name": "com.phonegap.amplya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406041629151-k6utn8tgk7d9dclmoq4fu7v806greq0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiBbGVE3x-eGqEjpc0ifYgKqi9SD244tM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406041629151:android:d5dfe6a6f5c3a6fe",
+        "android_client_info": {
+          "package_name": "com.notificaciones.amplya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406041629151-k6utn8tgk7d9dclmoq4fu7v806greq0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiBbGVE3x-eGqEjpc0ifYgKqi9SD244tM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
