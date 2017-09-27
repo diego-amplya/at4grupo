@@ -832,7 +832,7 @@ function insertPost(nombre_usuario, contrasenya, contenido)
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 function setupPush() {
-   var push = PushNotification.init({
+   /*var push = PushNotification.init({
        "android": {
            "senderID": "406041629151"
        },
@@ -853,7 +853,7 @@ function setupPush() {
            // Post registrationId to your app server as the value has changed
        }
 
-       /*$.ajax({
+       $.ajax({
                 async: true,
                 crossDomain: true,
                 //url: "http://clientes.at4grupo.es/webservice/firebase/?funcion=escribir_log",
@@ -873,7 +873,7 @@ function setupPush() {
 
                 console.log(textStatus + ' ' + errorThrown);
                 }
-        });*/
+        });
    });
 
    push.on('error', function(e) {
@@ -888,5 +888,114 @@ function setupPush() {
              data.title,           // title
              'Ok'                  // buttonName
          );
-     });
- }
+     });*/
+
+    var app = {
+        // Application Constructor
+        initialize: function() {
+            this.bindEvents();
+        },
+        // Bind Event Listeners
+        //
+        // Bind any events that are required on startup. Common events are:
+        // 'load', 'deviceready', 'offline', and 'online'.
+        bindEvents: function() {
+            document.addEventListener('deviceready', this.onDeviceReady, false);
+        },
+        // deviceready Event Handler
+        //
+        // The scope of 'this' is the event. In order to call the 'receivedEvent'
+        // function, we must explicitly call 'app.receivedEvent(...);'
+        onDeviceReady: function() {
+            console.log('Received Device Ready Event');
+            console.log('calling setup push');
+            app.setupPush();
+        },
+        setupPush: function() {
+            console.log('calling push init');
+            var push = PushNotification.init({
+                "android": {
+                    "senderID": "406041629151"
+                },
+                "browser": {},
+                "ios": {
+                    "sound": true,
+                    "vibration": true,
+                    "badge": true
+                },
+                "windows": {}
+            });
+            console.log('after init');
+
+
+
+            push.on('registration', function(data) {
+                console.log('registration event: ' + data.registrationId);
+
+                var oldRegId = localStorage.getItem('registrationId');
+                if (oldRegId !== data.registrationId) {
+                    // Save new registration ID
+                    localStorage.setItem('registrationId', data.registrationId);
+                    // Post registrationId to your app server as the value has changed
+                }
+
+                
+                $.ajax({
+                    async: true,
+                    crossDomain: true,
+                    //url: "http://clientes.at4grupo.es/webservice/firebase/?funcion=escribir_log",
+                    url: "http://clientes.at4grupo.es/webservice/firebase/escritura/?funcion=gestion_usuarios_firebase",
+                    method: "POST",
+                    data: {
+                    regId: data.registrationId
+
+                    },
+                    success: function (response, txtStatus, xhr) {
+
+                    //console.log('Respuesta:', JSON.parse(response));
+
+                    },
+                    error: function (textStatus, errorThrown) {
+
+                    console.log(textStatus + ' ' + errorThrown);
+                    }
+                });
+
+                var parentElement = document.getElementById('registration');
+                var listeningElement = parentElement.querySelector('.waiting');
+                var receivedElement = parentElement.querySelector('.received');
+
+                listeningElement.setAttribute('style', 'display:none;');
+                receivedElement.setAttribute('style', 'display:block;');
+
+                //document.getElementById("regId").innerHTML = data.registrationId;
+                
+               
+
+            });
+
+
+            /*var topic = "topicpruebas";
+            push.subscribe(topic, function () {
+                document.getElementById("topic").innerHTML = topic;
+            }, function (e) {
+                document.getElementById("topic").innerHTML = "No ha sido posible suscribirse al tema";
+            });*/
+
+            push.on('error', function(e) {
+                console.log("push error = " + e.message);
+            });
+
+            push.on('notification', function(data) {
+                console.log('notification event');
+                navigator.notification.alert(
+                    data.message,         // message
+                    null,                 // callback
+                    data.title,           // title
+                    'Ok'                  // buttonName
+                );
+           });
+        }
+    };
+
+}
