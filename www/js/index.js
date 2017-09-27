@@ -350,7 +350,7 @@ function habilitarUsuario(registro)
     if (registro.roles !== undefined) {
 
         //Pruebas
-        //setupPush();
+        setupPush();
 
         if (registro.roles[0] === 'author') {
 
@@ -853,7 +853,7 @@ function setupPush() {
            // Post registrationId to your app server as the value has changed
        }
 
-       $.ajax({
+       /*$.ajax({
                 async: true,
                 crossDomain: true,
                 //url: "http://clientes.at4grupo.es/webservice/firebase/?funcion=escribir_log",
@@ -873,7 +873,7 @@ function setupPush() {
 
                 console.log(textStatus + ' ' + errorThrown);
                 }
-        });
+        });*/
    });
 
    push.on('error', function(e) {
