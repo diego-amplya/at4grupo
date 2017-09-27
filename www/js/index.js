@@ -350,7 +350,7 @@ function habilitarUsuario(registro)
     if (registro.roles !== undefined) {
 
         //Pruebas
-        setupPush();
+        //setupPush();
 
         if (registro.roles[0] === 'author') {
 
